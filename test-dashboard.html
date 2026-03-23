@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Test Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#0D0D14;color:#E2E8F0;width:1440px;height:900px;overflow:hidden;display:flex;}
+code,pre,.mono{font-family:'JetBrains Mono',monospace;}
+
+/* Sidebar */
+.sidebar{width:220px;background:#0A0A10;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;}
+.s-logo{padding:20px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06);}
+.s-logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#8B5CF6,#6D28D9);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;}
+.s-logo-text{font-size:13px;font-weight:700;color:#E2E8F0;}
+.s-section{padding:16px 12px 4px;font-size:10px;font-weight:700;color:#475569;letter-spacing:.1em;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:7px;margin:0 6px 1px;cursor:pointer;font-size:12.5px;font-weight:500;color:#64748B;}
+.s-item.active{background:rgba(139,92,246,.15);color:#C4B5FD;}
+.s-item-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;}
+.badge-red{background:rgba(239,68,68,.2);color:#F87171;}
+.badge-green{background:rgba(16,185,129,.15);color:#6EE7B7;}
+.badge-gray{background:rgba(255,255,255,.08);color:#94A3B8;}
+.s-footer{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:#475569;}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#0D0D14;border-bottom:1px solid rgba(255,255,255,.06);height:52px;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0;}
+.tb-title{font-size:15px;font-weight:700;color:#E2E8F0;flex:1;}
+.tb-btn{padding:7px 14px;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.btn-run{background:#8B5CF6;color:#fff;}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.12);color:#94A3B8;}
+.status-pill{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.status-running{background:rgba(251,191,36,.15);color:#FCD34D;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Stats row */
+.stats-row{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.stat-card{flex:1;padding:18px 24px;border-right:1px solid rgba(255,255,255,.06);}
+.stat-card:last-child{border-right:none;}
+.stat-label{font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.stat-val{font-size:26px;font-weight:800;line-height:1;}
+.stat-sub{font-size:11px;margin-top:4px;}
+.val-pass{color:#34D399;}
+.val-fail{color:#F87171;}
+.val-skip{color:#FCD34D;}
+.val-total{color:#94A3B8;}
+.sub-pass{color:#059669;}
+.sub-fail{color:#DC2626;}
+.progress-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:10px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#34D399,#6366F1);}
+
+/* Content */
+.content{flex:1;display:flex;overflow:hidden;}
+
+/* Test list */
+.test-list{flex:1;overflow-y:auto;padding:0;}
+.tl-header{display:grid;grid-template-columns:1fr 80px 80px 100px;gap:8px;padding:9px 24px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);font-size:10.5px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em;position:sticky;top:0;}
+.suite{border-bottom:1px solid rgba(255,255,255,.05);}
+.suite-header{display:flex;align-items:center;gap:10px;padding:10px 24px;background:rgba(255,255,255,.03);cursor:pointer;}
+.suite-caret{font-size:11px;color:#64748B;}
+.suite-icon{font-size:13px;}
+.suite-name{font-size:13px;font-weight:600;color:#CBD5E1;flex:1;}
+.suite-stats{display:flex;gap:8px;align-items:center;}
+.suite-stat{font-size:11px;font-weight:600;}
+.suite-time{font-size:11px;color:#475569;margin-left:4px;}
+.test-row{display:grid;grid-template-columns:1fr 80px 80px 100px;gap:8px;padding:8px 24px 8px 44px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;align-items:center;}
+.test-row:hover{background:rgba(255,255,255,.03);}
+.test-row.active{background:rgba(139,92,246,.08);}
+.test-name{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#94A3B8;}
+.test-name.pass-text{color:#CBD5E1;}
+.test-status-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.icon-pass{background:#064E3B;color:#34D399;}
+.icon-fail{background:#450A0A;color:#F87171;}
+.icon-skip{background:#451A03;color:#FCD34D;}
+.icon-run{background:rgba(251,191,36,.15);color:#FCD34D;}
+.test-duration{font-size:11.5px;color:#475569;font-family:'JetBrains Mono',monospace;}
+.test-assertions{font-size:11.5px;color:#475569;}
+.test-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.06);color:#64748B;font-family:'JetBrains Mono',monospace;}
+
+/* Detail panel */
+.detail-panel{width:360px;background:#0A0A10;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;}
+.dp-head{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.06);}
+.dp-status{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.dp-test-name{font-size:13px;font-weight:700;color:#E2E8F0;line-height:1.4;}
+.dp-meta{font-size:11px;color:#475569;margin-top:4px;}
+.dp-body{padding:16px 20px;flex:1;overflow-y:auto;}
+.dp-section-title{font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;margin-top:16px;}
+.dp-section-title:first-child{margin-top:0;}
+.error-block{background:#1A0A0A;border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;font-size:11px;color:#F87171;font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:12px;}
+.err-line{color:#FC8181;font-weight:600;}
+.err-file{color:#94A3B8;}
+.assertion-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.a-icon{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.a-text{font-size:11.5px;color:#94A3B8;line-height:1.5;flex:1;}
+.a-text.fail{color:#F87171;}
+.screenshot-preview{background:#1A1A2A;border:1px solid rgba(255,255,255,.08);border-radius:8px;height:100px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#475569;margin-bottom:12px;}
+.dp-actions{display:flex;gap:8px;padding:16px 20px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.da-btn{flex:1;padding:8px;border-radius:7px;font-size:12px;font-weight:600;text-align:center;cursor:pointer;}
+.da-rerun{background:rgba(139,92,246,.2);color:#C4B5FD;}
+.da-copy{background:rgba(255,255,255,.06);color:#94A3B8;}
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-mark">T</div>
+    <div class="s-logo-text">TestRunner</div>
+  </div>
+  <div class="s-section">Suites</div>
+  <div class="s-item active">▶ All Tests <div class="s-item-badge badge-red">4</div></div>
+  <div class="s-item">🔐 Auth Module</div>
+  <div class="s-item">👥 User API<div class="s-item-badge badge-red">2</div></div>
+  <div class="s-item">📦 Data Layer</div>
+  <div class="s-item">🎨 UI Components<div class="s-item-badge badge-green">All pass</div></div>
+  <div class="s-item">🔗 Integrations<div class="s-item-badge badge-red">2</div></div>
+  <div class="s-item">⚡ Performance</div>
+  <div class="s-section">History</div>
+  <div class="s-item">🕐 Run #147<div class="s-item-badge badge-green">✓</div></div>
+  <div class="s-item">🕐 Run #146<div class="s-item-badge badge-red">4</div></div>
+  <div class="s-item">🕐 Run #145<div class="s-item-badge badge-green">✓</div></div>
+  <div class="s-footer">
+    Run #148 · Started 09:41<br>
+    <span style="color:#8B5CF6">Branch: feature/auth-v2</span>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title">Test Suite — Run #148</div>
+    <div class="status-pill status-running">⏱ Running…</div>
+    <div class="tb-btn btn-outline">⏸ Pause</div>
+    <div class="tb-btn btn-outline">⬡ Filter</div>
+    <div class="tb-btn btn-run">▶ Re-run All</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total</div>
+      <div class="stat-val val-total">128</div>
+      <div class="stat-sub" style="color:#475569">48 remaining</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Passed</div>
+      <div class="stat-val val-pass">76</div>
+      <div class="stat-sub sub-pass">↑ 4 vs last run</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:76%;background:#34D399"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Failed</div>
+      <div class="stat-val val-fail">4</div>
+      <div class="stat-sub sub-fail">↓ 1 from last run</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:4%;background:#F87171"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Skipped</div>
+      <div class="stat-val val-skip">0</div>
+      <div class="stat-sub" style="color:#D97706">No skips this run</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Duration</div>
+      <div class="stat-val" style="color:#A5B4FC;font-size:22px;" class="mono">4.2s</div>
+      <div class="stat-sub" style="color:#475569">Avg 33ms/test</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Test list -->
+    <div class="test-list">
+      <div class="tl-header">
+        <div>Test Name</div>
+        <div>Duration</div>
+        <div>Assertions</div>
+        <div>Status</div>
+      </div>
+
+      <!-- Suite 1: Auth -->
+      <div class="suite">
+        <div class="suite-header">
+          <div class="suite-caret">▾</div>
+          <div class="suite-icon">🔐</div>
+          <div class="suite-name">Auth Module</div>
+          <div class="suite-stats">
+            <span class="suite-stat" style="color:#34D399">✓ 18</span>
+            <span class="suite-stat" style="color:#F87171">✕ 0</span>
+          </div>
+          <div class="suite-time">1.2s</div>
+        </div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>should login with valid credentials</div><div class="test-duration">42ms</div><div class="test-assertions">8</div><div><span class="test-tag">auth</span></div></div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>should reject invalid password</div><div class="test-duration">18ms</div><div class="test-assertions">3</div><div><span class="test-tag">auth</span></div></div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>should handle expired JWT token</div><div class="test-duration">31ms</div><div class="test-assertions">5</div><div><span class="test-tag">jwt</span></div></div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>should refresh token correctly</div><div class="test-duration">56ms</div><div class="test-assertions">6</div><div><span class="test-tag">jwt</span></div></div>
+      </div>
+
+      <!-- Suite 2: User API - has failures -->
+      <div class="suite">
+        <div class="suite-header">
+          <div class="suite-caret">▾</div>
+          <div class="suite-icon">👥</div>
+          <div class="suite-name">User API</div>
+          <div class="suite-stats">
+            <span class="suite-stat" style="color:#34D399">✓ 14</span>
+            <span class="suite-stat" style="color:#F87171">✕ 2</span>
+          </div>
+          <div class="suite-time">0.9s</div>
+        </div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>GET /users returns paginated list</div><div class="test-duration">28ms</div><div class="test-assertions">4</div><div><span class="test-tag">api</span></div></div>
+        <div class="test-row active"><div class="test-name" style="color:#F87171"><div class="test-status-icon icon-fail">✕</div>PATCH /users/:id validates permissions</div><div class="test-duration" style="color:#F87171">143ms</div><div class="test-assertions" style="color:#F87171">2/5</div><div><span class="test-tag" style="background:rgba(239,68,68,.15);color:#F87171">perm</span></div></div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>DELETE /users/:id soft-deletes record</div><div class="test-duration">22ms</div><div class="test-assertions">3</div><div><span class="test-tag">api</span></div></div>
+        <div class="test-row"><div class="test-name" style="color:#F87171"><div class="test-status-icon icon-fail">✕</div>POST /users/bulk enforces rate limit</div><div class="test-duration" style="color:#F87171">312ms</div><div class="test-assertions" style="color:#F87171">1/4</div><div><span class="test-tag" style="background:rgba(239,68,68,.15);color:#F87171">rate</span></div></div>
+      </div>
+
+      <!-- Suite 3: Data Layer -->
+      <div class="suite">
+        <div class="suite-header">
+          <div class="suite-caret">▾</div>
+          <div class="suite-icon">📦</div>
+          <div class="suite-name">Data Layer</div>
+          <div class="suite-stats">
+            <span class="suite-stat" style="color:#34D399">✓ 22</span>
+            <span class="suite-stat" style="color:#F87171">✕ 0</span>
+          </div>
+          <div class="suite-time">1.8s</div>
+        </div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>repository.findById handles missing record</div><div class="test-duration">15ms</div><div class="test-assertions">2</div><div><span class="test-tag">db</span></div></div>
+        <div class="test-row"><div class="test-name pass-text"><div class="test-status-icon icon-pass">✓</div>transaction rollback on constraint violation</div><div class="test-duration">88ms</div><div class="test-assertions">7</div><div><span class="test-tag">db</span></div></div>
+      </div>
+
+      <!-- Suite 4: Integrations -->
+      <div class="suite">
+        <div class="suite-header">
+          <div class="suite-caret">▸</div>
+          <div class="suite-icon">🔗</div>
+          <div class="suite-name">Integrations</div>
+          <div class="suite-stats">
+            <span class="suite-stat" style="color:#34D399">✓ 10</span>
+            <span class="suite-stat" style="color:#F87171">✕ 2</span>
+          </div>
+          <div class="suite-time">⏱ running</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <div class="detail-panel">
+      <div class="dp-head">
+        <div class="dp-status">
+          <div class="test-status-icon icon-fail">✕</div>
+          <span style="font-size:12px;font-weight:600;color:#F87171">FAILED · 143ms</span>
+        </div>
+        <div class="dp-test-name">PATCH /users/:id validates permissions</div>
+        <div class="dp-meta">User API · user.api.spec.ts:142</div>
+      </div>
+      <div class="dp-body">
+        <div class="dp-section-title">Error</div>
+        <div class="error-block">
+          <div class="err-line">AssertionError: expected 403, got 200</div>
+          <div class="err-file">  at validatePermissions (user.api.spec.ts:158)</div>
+          <div class="err-file">  at Context.&lt;anonymous&gt; (user.api.spec.ts:142)</div>
+          <div style="color:#64748B;margin-top:4px">Expected: <span style="color:#F87171">403 Forbidden</span></div>
+          <div style="color:#64748B">Received: <span style="color:#FCD34D">200 OK</span></div>
+        </div>
+        <div class="dp-section-title">Assertions (2 / 5 passed)</div>
+        <div class="assertion-row"><div class="a-icon" style="background:#064E3B;color:#34D399">✓</div><div class="a-text">request contains auth header</div></div>
+        <div class="assertion-row"><div class="a-icon" style="background:#064E3B;color:#34D399">✓</div><div class="a-text">user role is viewer</div></div>
+        <div class="assertion-row"><div class="a-icon" style="background:#450A0A;color:#F87171">✕</div><div class="a-text fail">response status should be 403</div></div>
+        <div class="assertion-row"><div class="a-icon" style="background:#450A0A;color:#F87171">✕</div><div class="a-text fail">response body has error message</div></div>
+        <div class="assertion-row"><div class="a-icon" style="background:#450A0A;color:#F87171">✕</div><div class="a-text fail">audit log records the attempt</div></div>
+        <div class="dp-section-title">Screenshot</div>
+        <div class="screenshot-preview">📷 No screenshot captured</div>
+      </div>
+      <div class="dp-actions">
+        <div class="da-btn da-rerun">▶ Re-run Test</div>
+        <div class="da-btn da-copy">⧉ Copy Error</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

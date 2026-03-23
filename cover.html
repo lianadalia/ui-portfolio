@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>UI Portfolio — Liana Linvik</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#0A0A14;color:#F1F5F9;width:1440px;min-height:900px;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.07) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.glow{position:absolute;width:800px;height:800px;background:radial-gradient(circle,rgba(99,102,241,.18) 0%,transparent 70%);top:-200px;left:-100px;pointer-events:none;}
+.glow2{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(168,85,247,.12) 0%,transparent 70%);bottom:-100px;right:100px;pointer-events:none;}
+.layout{display:flex;height:900px;position:relative;z-index:1;}
+.sidebar{width:300px;padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.06);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;}
+.logo-text{font-size:15px;font-weight:600;color:#E2E8F0;letter-spacing:-.2px;}
+.nav{display:flex;flex-direction:column;gap:4px;}
+.nav-label{font-size:10px;font-weight:600;color:#64748B;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;margin-top:24px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:background .15s;font-size:13.5px;font-weight:500;color:#94A3B8;}
+.nav-item.active{background:rgba(99,102,241,.18);color:#A5B4FC;}
+.nav-item:hover{background:rgba(255,255,255,.05);}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:#475569;}
+.nav-dot.active{background:#6366F1;}
+.sidebar-footer{font-size:12px;color:#475569;}
+.main{flex:1;padding:48px 56px;overflow:hidden;}
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:52px;}
+.eyebrow{font-size:12px;font-weight:600;color:#6366F1;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.title{font-size:52px;font-weight:800;line-height:1.05;letter-spacing:-1.5px;color:#F1F5F9;}
+.title span{background:linear-gradient(90deg,#6366F1,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.subtitle{font-size:16px;color:#64748B;margin-top:16px;max-width:400px;line-height:1.6;font-weight:400;}
+.badge-row{display:flex;gap:8px;margin-top:20px;}
+.badge{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid rgba(99,102,241,.3);color:#818CF8;background:rgba(99,102,241,.08);}
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s;position:relative;}
+.card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,.35);}
+.card-thumb{height:148px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.card-thumb-1{background:linear-gradient(135deg,#1E1B4B 0%,#312E81 100%);}
+.card-thumb-2{background:linear-gradient(135deg,#064E3B 0%,#065F46 100%);}
+.card-thumb-3{background:linear-gradient(135deg,#1E3A5F 0%,#1D4ED8 100%);}
+.card-thumb-4{background:linear-gradient(135deg,#3B0764 0%,#6D28D9 100%);}
+.card-thumb-5{background:linear-gradient(135deg,#7C2D12 0%,#C2410C 100%);}
+.card-thumb-6{background:linear-gradient(135deg,#134E4A 0%,#0F766E 100%);}
+.thumb-icon{font-size:48px;opacity:.7;}
+.card-tag{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.tag-purple{background:rgba(99,102,241,.3);color:#A5B4FC;border:1px solid rgba(99,102,241,.3);}
+.tag-green{background:rgba(16,185,129,.25);color:#6EE7B7;border:1px solid rgba(16,185,129,.25);}
+.tag-blue{background:rgba(59,130,246,.25);color:#93C5FD;border:1px solid rgba(59,130,246,.25);}
+.tag-violet{background:rgba(139,92,246,.25);color:#C4B5FD;border:1px solid rgba(139,92,246,.25);}
+.tag-orange{background:rgba(249,115,22,.25);color:#FDBA74;border:1px solid rgba(249,115,22,.25);}
+.tag-teal{background:rgba(20,184,166,.25);color:#5EEAD4;border:1px solid rgba(20,184,166,.25);}
+.card-body{padding:16px 18px 18px;}
+.card-title{font-size:14px;font-weight:700;color:#E2E8F0;margin-bottom:6px;}
+.card-desc{font-size:12px;color:#64748B;line-height:1.55;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.card-num{font-size:11px;font-weight:500;color:#475569;}
+.card-arrow{width:26px;height:26px;border-radius:8px;background:rgba(99,102,241,.15);display:flex;align-items:center;justify-content:center;color:#818CF8;font-size:13px;}
+
+/* Mini UI previews inside thumbnails */
+.mini-table{width:80%;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;}
+.mini-row{display:flex;gap:8px;padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.mini-row.head{background:rgba(255,255,255,.08);font-size:8px;font-weight:700;color:rgba(255,255,255,.5);}
+.mini-cell{flex:1;height:6px;border-radius:2px;background:rgba(255,255,255,.12);}
+.mini-avatar{width:14px;height:14px;border-radius:50%;background:#6366F1;flex-shrink:0;}
+
+.mini-browser{width:85%;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;}
+.mini-chrome{background:rgba(255,255,255,.1);padding:5px 8px;display:flex;align-items:center;gap:4px;}
+.mini-dot{width:5px;height:5px;border-radius:50%;}
+.mini-url{flex:1;height:8px;background:rgba(255,255,255,.15);border-radius:10px;margin:0 8px;}
+.mini-content{padding:8px;display:flex;flex-direction:column;gap:4px;}
+.mini-line{height:5px;border-radius:2px;background:rgba(255,255,255,.12);}
+
+.mini-phone{width:44px;height:78px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;}
+.mini-phone-head{background:rgba(255,255,255,.15);height:14px;display:flex;align-items:center;justify-content:center;}
+.mini-phone-cam{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);}
+.mini-phone-body{flex:1;padding:4px 3px;display:flex;flex-direction:column;gap:3px;}
+.mini-phone-card{height:20px;border-radius:4px;background:rgba(255,255,255,.15);}
+.mini-phone-bar{display:flex;gap:2px;margin-top:auto;}
+.mini-phone-tab{flex:1;height:8px;border-radius:3px;background:rgba(255,255,255,.12);}
+
+.mini-test{width:82%;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;}
+.mini-test-head{background:rgba(255,255,255,.1);padding:5px 10px;display:flex;align-items:center;gap:6px;}
+.mini-test-circle{width:18px;height:18px;border-radius:50%;border:2px solid;}
+.pass{border-color:#34D399;color:#34D399;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.fail{border-color:#F87171;color:#F87171;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.mini-test-rows{padding:6px 10px;display:flex;flex-direction:column;gap:3px;}
+.mini-test-row{display:flex;align-items:center;gap:6px;}
+.mini-test-dot{width:5px;height:5px;border-radius:50%;}
+.dot-green{background:#34D399;}
+.dot-red{background:#F87171;}
+.dot-yellow{background:#FCD34D;}
+.mini-test-line{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.1);}
+
+.mini-profile{width:70%;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.mini-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C2410C,#F97316);}
+.mini-name-line{width:60px;height:5px;border-radius:2px;background:rgba(255,255,255,.3);}
+.mini-stat-row{display:flex;gap:8px;}
+.mini-stat{width:28px;height:18px;border-radius:5px;background:rgba(255,255,255,.12);}
+
+.mini-journal{width:82%;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden;}
+.mini-j-head{background:rgba(20,184,166,.25);padding:6px 10px;display:flex;align-items:center;gap:4px;}
+.mini-j-circle{width:8px;height:8px;border-radius:50%;background:#5EEAD4;}
+.mini-j-title{width:50px;height:5px;border-radius:2px;background:rgba(255,255,255,.3);}
+.mini-j-rows{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
+.mini-j-entry{display:flex;gap:6px;align-items:flex-start;}
+.mini-j-dot{width:5px;height:5px;border-radius:50%;background:#2DD4BF;margin-top:2px;flex-shrink:0;}
+.mini-j-lines{flex:1;display:flex;flex-direction:column;gap:2px;}
+.mini-j-line{height:4px;border-radius:2px;background:rgba(255,255,255,.12);}
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow"></div>
+<div class="glow2"></div>
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="logo">
+        <div class="logo-mark">L</div>
+        <div class="logo-text">Liana Linvik</div>
+      </div>
+      <div class="nav">
+        <div class="nav-label">Portfolio</div>
+        <div class="nav-item active"><div class="nav-dot active"></div> All Projects</div>
+        <div class="nav-item"><div class="nav-dot"></div> Case Studies</div>
+        <div class="nav-item"><div class="nav-dot"></div> Design System</div>
+        <div class="nav-label">About</div>
+        <div class="nav-item"><div class="nav-dot"></div> Profile</div>
+        <div class="nav-item"><div class="nav-dot"></div> Self-Reflection</div>
+        <div class="nav-item"><div class="nav-dot"></div> Contact</div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      UI/UX Portfolio &nbsp;·&nbsp; 2024<br>
+      <span style="color:#6366F1;margin-top:4px;display:block;">linkdesign.fi</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <div>
+        <div class="eyebrow">UI / UX Portfolio</div>
+        <div class="title">Designing<br>Experiences<br>that <span>Matter</span></div>
+        <div class="subtitle">6 projects spanning enterprise tools, web apps, and mobile — each crafted with purpose and precision.</div>
+        <div class="badge-row">
+          <div class="badge">Product Design</div>
+          <div class="badge">Interaction Design</div>
+          <div class="badge">UX Research</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Card 1: User & Group Management -->
+      <div class="card">
+        <div class="card-thumb card-thumb-1">
+          <div class="card-tag tag-purple">Enterprise</div>
+          <div class="mini-table">
+            <div class="mini-row head"><span style="font-size:7px;color:rgba(255,255,255,.5)">USERS</span><span style="font-size:7px;color:rgba(255,255,255,.5);margin-left:auto">ROLE</span></div>
+            <div class="mini-row"><div class="mini-avatar"></div><div class="mini-cell"></div><div class="mini-cell" style="max-width:40px;background:#6366F1;opacity:.5"></div></div>
+            <div class="mini-row"><div class="mini-avatar" style="background:#8B5CF6"></div><div class="mini-cell"></div><div class="mini-cell" style="max-width:40px"></div></div>
+            <div class="mini-row"><div class="mini-avatar" style="background:#A78BFA"></div><div class="mini-cell"></div><div class="mini-cell" style="max-width:40px;background:#34D399;opacity:.5"></div></div>
+            <div class="mini-row"><div class="mini-avatar" style="background:#4F46E5"></div><div class="mini-cell"></div><div class="mini-cell" style="max-width:40px"></div></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">User & Group Management</div>
+          <div class="card-desc">Enterprise admin dashboard with role-based access control, group hierarchies, and permissions matrix.</div>
+          <div class="card-footer">
+            <div class="card-num">01 — Admin Tool</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Browser -->
+      <div class="card">
+        <div class="card-thumb card-thumb-2">
+          <div class="card-tag tag-green">Web App</div>
+          <div class="mini-browser">
+            <div class="mini-chrome">
+              <div class="mini-dot" style="background:#F87171"></div>
+              <div class="mini-dot" style="background:#FCD34D"></div>
+              <div class="mini-dot" style="background:#34D399"></div>
+              <div class="mini-url"></div>
+            </div>
+            <div class="mini-content">
+              <div class="mini-line" style="width:70%"></div>
+              <div class="mini-line" style="width:90%"></div>
+              <div class="mini-line" style="width:55%"></div>
+              <div style="display:flex;gap:6px;margin-top:4px">
+                <div style="flex:1;height:28px;border-radius:4px;background:rgba(16,185,129,.2)"></div>
+                <div style="flex:1;height:28px;border-radius:4px;background:rgba(255,255,255,.08)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Browser Application</div>
+          <div class="card-desc">Modern web browser UI with tabbed navigation, bookmark management, and an integrated reading mode.</div>
+          <div class="card-footer">
+            <div class="card-num">02 — Browser UI</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Mobile App -->
+      <div class="card">
+        <div class="card-thumb card-thumb-3">
+          <div class="card-tag tag-blue">Mobile</div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="mini-phone">
+              <div class="mini-phone-head"><div class="mini-phone-cam"></div></div>
+              <div class="mini-phone-body">
+                <div class="mini-phone-card"></div>
+                <div class="mini-phone-card" style="height:12px"></div>
+                <div class="mini-phone-card" style="height:12px"></div>
+                <div class="mini-phone-bar"><div class="mini-phone-tab"></div><div class="mini-phone-tab" style="background:#6366F1;opacity:.6"></div><div class="mini-phone-tab"></div></div>
+              </div>
+            </div>
+            <div class="mini-phone" style="transform:scale(1.1);opacity:.9">
+              <div class="mini-phone-head"><div class="mini-phone-cam"></div></div>
+              <div class="mini-phone-body">
+                <div class="mini-phone-card" style="height:30px;background:rgba(59,130,246,.3)"></div>
+                <div class="mini-phone-card" style="height:10px"></div>
+                <div class="mini-phone-bar"><div class="mini-phone-tab"></div><div class="mini-phone-tab"></div><div class="mini-phone-tab" style="background:#3B82F6;opacity:.6"></div></div>
+              </div>
+            </div>
+            <div class="mini-phone" style="opacity:.6">
+              <div class="mini-phone-head"><div class="mini-phone-cam"></div></div>
+              <div class="mini-phone-body">
+                <div class="mini-phone-card" style="height:14px"></div>
+                <div class="mini-phone-card" style="height:14px"></div>
+                <div class="mini-phone-bar"><div class="mini-phone-tab" style="background:#1D4ED8;opacity:.6"></div><div class="mini-phone-tab"></div><div class="mini-phone-tab"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Mobile App — Wellness</div>
+          <div class="card-desc">iOS wellness app with habit tracking, daily mood check-ins, and personalised insights dashboard.</div>
+          <div class="card-footer">
+            <div class="card-num">03 — Mobile</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Test Dashboard -->
+      <div class="card">
+        <div class="card-thumb card-thumb-4">
+          <div class="card-tag tag-violet">QA Tool</div>
+          <div class="mini-test">
+            <div class="mini-test-head">
+              <div class="mini-test-circle pass">✓</div>
+              <div class="mini-test-circle fail" style="margin-left:4px">✕</div>
+              <div style="font-size:8px;color:rgba(255,255,255,.5);margin-left:4px">24/28 passed</div>
+            </div>
+            <div class="mini-test-rows">
+              <div class="mini-test-row"><div class="mini-test-dot dot-green"></div><div class="mini-test-line"></div></div>
+              <div class="mini-test-row"><div class="mini-test-dot dot-green"></div><div class="mini-test-line" style="width:60%"></div></div>
+              <div class="mini-test-row"><div class="mini-test-dot dot-red"></div><div class="mini-test-line" style="width:80%"></div></div>
+              <div class="mini-test-row"><div class="mini-test-dot dot-yellow"></div><div class="mini-test-line" style="width:50%"></div></div>
+              <div class="mini-test-row"><div class="mini-test-dot dot-green"></div><div class="mini-test-line" style="width:70%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Test Dashboard</div>
+          <div class="card-desc">QA tool for running automated test suites with real-time pass/fail tracking and failure drill-down.</div>
+          <div class="card-footer">
+            <div class="card-num">04 — QA Tool</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Profile -->
+      <div class="card">
+        <div class="card-thumb card-thumb-5">
+          <div class="card-tag tag-orange">Profile</div>
+          <div class="mini-profile">
+            <div class="mini-ava"></div>
+            <div class="mini-name-line"></div>
+            <div style="height:4px;width:40px;border-radius:2px;background:rgba(255,255,255,.15)"></div>
+            <div class="mini-stat-row">
+              <div class="mini-stat"></div>
+              <div class="mini-stat"></div>
+              <div class="mini-stat"></div>
+            </div>
+            <div style="height:24px;width:80px;border-radius:6px;background:rgba(249,115,22,.3)"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">User Profile Page</div>
+          <div class="card-desc">Personalised profile interface with skills showcase, activity timeline, and settings management.</div>
+          <div class="card-footer">
+            <div class="card-num">05 — Profile</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Self-Reflection -->
+      <div class="card">
+        <div class="card-thumb card-thumb-6">
+          <div class="card-tag tag-teal">Reflection</div>
+          <div class="mini-journal">
+            <div class="mini-j-head">
+              <div class="mini-j-circle"></div>
+              <div class="mini-j-title"></div>
+            </div>
+            <div class="mini-j-rows">
+              <div class="mini-j-entry">
+                <div class="mini-j-dot"></div>
+                <div class="mini-j-lines">
+                  <div class="mini-j-line" style="width:80%"></div>
+                  <div class="mini-j-line" style="width:60%"></div>
+                </div>
+              </div>
+              <div class="mini-j-entry">
+                <div class="mini-j-dot" style="background:#FCD34D"></div>
+                <div class="mini-j-lines">
+                  <div class="mini-j-line" style="width:70%"></div>
+                  <div class="mini-j-line" style="width:50%"></div>
+                </div>
+              </div>
+              <div class="mini-j-entry">
+                <div class="mini-j-dot" style="background:#A78BFA"></div>
+                <div class="mini-j-lines">
+                  <div class="mini-j-line" style="width:90%"></div>
+                  <div class="mini-j-line" style="width:40%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Self-Reflection Tool</div>
+          <div class="card-desc">Journaling and self-assessment app with mood tracking, guided prompts, and growth visualisation.</div>
+          <div class="card-footer">
+            <div class="card-num">06 — Reflection</div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

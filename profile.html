@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Profile Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;width:1440px;height:900px;overflow:hidden;display:flex;}
+
+/* Left panel */
+.left-panel{width:300px;background:#fff;border-right:1px solid #E2E8F0;display:flex;flex-direction:column;flex-shrink:0;}
+.lp-nav{padding:20px 16px 12px;border-bottom:1px solid #E2E8F0;}
+.lp-logo{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
+.lp-mark{width:28px;height:28px;background:linear-gradient(135deg,#F97316,#EF4444);border-radius:7px;}
+.lp-text{font-size:14px;font-weight:700;color:#0F172A;}
+.lp-search{display:flex;align-items:center;gap:8px;background:#F1F5F9;border-radius:8px;padding:8px 12px;font-size:13px;color:#94A3B8;margin-bottom:8px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:500;color:#64748B;margin-bottom:1px;}
+.nav-item.active{background:#FFF7ED;color:#C2410C;}
+.nav-item:hover{background:#F8FAFC;}
+.ni-icon{font-size:15px;}
+.ni-badge{margin-left:auto;font-size:10px;background:#FEE2E2;color:#EF4444;padding:1px 6px;border-radius:8px;font-weight:600;}
+.lp-section{padding:16px 16px 4px;font-size:10px;font-weight:700;color:#94A3B8;letter-spacing:.1em;text-transform:uppercase;}
+.lp-footer{margin-top:auto;padding:16px;border-top:1px solid #E2E8F0;}
+.lp-user{display:flex;align-items:center;gap:10px;}
+.lp-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#F97316,#EF4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+.lp-name{font-size:13px;font-weight:600;color:#0F172A;}
+.lp-handle{font-size:11px;color:#94A3B8;}
+
+/* Main content */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.main-topbar{background:#fff;border-bottom:1px solid #E2E8F0;height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;flex-shrink:0;}
+.mt-tab{font-size:14px;font-weight:500;color:#94A3B8;cursor:pointer;padding:0 0 2px;border-bottom:2px solid transparent;}
+.mt-tab.active{color:#0F172A;font-weight:600;border-bottom-color:#F97316;}
+.main-body{flex:1;overflow-y:auto;background:#F8FAFC;}
+
+/* Profile hero */
+.profile-hero{background:#fff;border-bottom:1px solid #E2E8F0;}
+.profile-cover{height:140px;background:linear-gradient(135deg,#FFF7ED 0%,#FFEDD5 30%,#FEE2E2 70%,#FCE7F3 100%);position:relative;}
+.cover-pattern{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(249,115,22,.12) 1px,transparent 1px);background-size:20px 20px;}
+.profile-info{padding:0 36px 24px;position:relative;}
+.profile-ava-wrap{position:relative;display:inline-block;margin-top:-44px;margin-bottom:12px;}
+.profile-ava{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#F97316,#EF4444);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;border:4px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+.edit-btn{position:absolute;bottom:4px;right:4px;width:26px;height:26px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid #E2E8F0;cursor:pointer;}
+.profile-name{font-size:22px;font-weight:800;color:#0F172A;letter-spacing:-.4px;}
+.profile-handle{font-size:14px;color:#64748B;margin-top:2px;}
+.profile-bio{font-size:13px;color:#374151;margin-top:10px;max-width:520px;line-height:1.6;}
+.profile-meta{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:12.5px;color:#64748B;}
+.meta-icon{font-size:13px;}
+.profile-actions{position:absolute;top:16px;right:36px;display:flex;gap:10px;}
+.action-btn{padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-follow{background:#F97316;color:#fff;}
+.btn-msg{background:#F8FAFC;color:#374151;border:1px solid #E2E8F0;}
+.profile-stats{display:flex;gap:0;border-top:1px solid #F1F5F9;margin:0 36px;}
+.pstat{padding:16px 24px;text-align:center;border-right:1px solid #F1F5F9;}
+.pstat:last-child{border-right:none;}
+.pstat-val{font-size:20px;font-weight:800;color:#0F172A;}
+.pstat-label{font-size:11px;color:#94A3B8;margin-top:2px;}
+
+/* Content grid */
+.content-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;padding:24px 36px;}
+
+/* Activity / posts */
+.activity-feed{display:flex;flex-direction:column;gap:16px;}
+.af-header{font-size:14px;font-weight:700;color:#0F172A;margin-bottom:4px;}
+.post-card{background:#fff;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;}
+.pc-header{padding:16px 18px 12px;display:flex;align-items:center;gap:10px;}
+.pc-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#F97316,#EF4444);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+.pc-meta{flex:1;}
+.pc-name{font-size:13px;font-weight:600;color:#0F172A;}
+.pc-time{font-size:11px;color:#94A3B8;}
+.pc-body{padding:0 18px 14px;font-size:13.5px;color:#374151;line-height:1.65;}
+.pc-image{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);height:180px;margin:0 18px 14px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.pc-footer{padding:10px 18px;border-top:1px solid #F8FAFC;display:flex;gap:20px;}
+.pf-action{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#64748B;cursor:pointer;}
+
+/* Skills sidebar */
+.sidebar-right{display:flex;flex-direction:column;gap:16px;}
+.sr-card{background:#fff;border-radius:12px;border:1px solid #E2E8F0;padding:18px;}
+.src-title{font-size:13px;font-weight:700;color:#0F172A;margin-bottom:14px;}
+.skill-list{display:flex;flex-direction:column;gap:10px;}
+.skill-item{display:flex;flex-direction:column;gap:4px;}
+.skill-row{display:flex;align-items:center;justify-content:space-between;}
+.skill-name{font-size:12.5px;font-weight:500;color:#374151;}
+.skill-pct{font-size:11px;font-weight:600;color:#64748B;}
+.skill-bar{height:5px;background:#F1F5F9;border-radius:3px;overflow:hidden;}
+.skill-fill{height:100%;border-radius:3px;}
+.badge-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.achievement-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;}
+.ab-1{background:#FFF7ED;color:#C2410C;}
+.ab-2{background:#ECFDF5;color:#065F46;}
+.ab-3{background:#EEF2FF;color:#4F46E5;}
+.ab-4{background:#FDF4FF;color:#7E22CE;}
+.ab-5{background:#F0F9FF;color:#0369A1;}
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<!-- Left nav -->
+<div class="left-panel">
+  <div class="lp-nav">
+    <div class="lp-logo">
+      <div class="lp-mark"></div>
+      <div class="lp-text">LinkDesign</div>
+    </div>
+    <div class="lp-search">🔍 Search...</div>
+  </div>
+  <div style="padding:8px 8px 0">
+    <div class="nav-item active"><div class="ni-icon">👤</div> Profile</div>
+    <div class="nav-item"><div class="ni-icon">🏠</div> Feed</div>
+    <div class="nav-item"><div class="ni-icon">💬</div> Messages <div class="ni-badge">3</div></div>
+    <div class="nav-item"><div class="ni-icon">🔔</div> Notifications</div>
+    <div class="nav-item"><div class="ni-icon">🎨</div> Projects</div>
+    <div class="nav-item"><div class="ni-icon">📊</div> Analytics</div>
+    <div class="lp-section">Network</div>
+    <div class="nav-item"><div class="ni-icon">🤝</div> Connections</div>
+    <div class="nav-item"><div class="ni-icon">🔍</div> Discover</div>
+    <div class="lp-section">Settings</div>
+    <div class="nav-item"><div class="ni-icon">⚙️</div> Preferences</div>
+    <div class="nav-item"><div class="ni-icon">🔒</div> Privacy</div>
+  </div>
+  <div class="lp-footer">
+    <div class="lp-user">
+      <div class="lp-ava">LL</div>
+      <div>
+        <div class="lp-name">Liana Linvik</div>
+        <div class="lp-handle">@lianalinvik</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="main-topbar">
+    <div class="mt-tab active">Overview</div>
+    <div class="mt-tab">Projects</div>
+    <div class="mt-tab">Case Studies</div>
+    <div class="mt-tab">Skills</div>
+    <div class="mt-tab">Contact</div>
+  </div>
+  <div class="main-body">
+    <!-- Hero -->
+    <div class="profile-hero">
+      <div class="profile-cover"><div class="cover-pattern"></div></div>
+      <div class="profile-info">
+        <div class="profile-actions">
+          <div class="action-btn btn-msg">Message</div>
+          <div class="action-btn btn-follow">+ Follow</div>
+        </div>
+        <div class="profile-ava-wrap">
+          <div class="profile-ava">LL</div>
+          <div class="edit-btn">✏️</div>
+        </div>
+        <div class="profile-name">Liana Linvik</div>
+        <div class="profile-handle">@lianalinvik · UI/UX Designer & Design Systems Lead</div>
+        <div class="profile-bio">Crafting digital experiences that balance beauty and usability. Specialising in enterprise tools, design systems, and mobile apps. Based in Helsinki, working globally 🌍</div>
+        <div class="profile-meta">
+          <div class="meta-item"><div class="meta-icon">📍</div> Helsinki, Finland</div>
+          <div class="meta-item"><div class="meta-icon">🌐</div> linkdesign.fi</div>
+          <div class="meta-item"><div class="meta-icon">🎓</div> Aalto University</div>
+          <div class="meta-item"><div class="meta-icon">📅</div> Joined January 2021</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="pstat-val">48</div><div class="pstat-label">Projects</div></div>
+        <div class="pstat"><div class="pstat-val">2.4k</div><div class="pstat-label">Followers</div></div>
+        <div class="pstat"><div class="pstat-val">312</div><div class="pstat-label">Following</div></div>
+        <div class="pstat"><div class="pstat-val">9.8k</div><div class="pstat-label">Views</div></div>
+        <div class="pstat"><div class="pstat-val">4.9 ⭐</div><div class="pstat-label">Rating</div></div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-grid">
+      <div class="activity-feed">
+        <div class="af-header">Recent Activity</div>
+
+        <div class="post-card">
+          <div class="pc-header">
+            <div class="pc-ava">LL</div>
+            <div class="pc-meta">
+              <div class="pc-name">Liana Linvik</div>
+              <div class="pc-time">2 hours ago · Published case study</div>
+            </div>
+          </div>
+          <div class="pc-image">🎨</div>
+          <div class="pc-body">Just published my latest case study on the <strong>User & Group Management</strong> dashboard redesign. Cut admin task time by 40% through progressive disclosure and a cleaner permission matrix. Swipe to see the before/after.</div>
+          <div class="pc-footer">
+            <div class="pf-action">❤️ 124 likes</div>
+            <div class="pf-action">💬 18 comments</div>
+            <div class="pf-action">↗️ Share</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="pc-header">
+            <div class="pc-ava">LL</div>
+            <div class="pc-meta">
+              <div class="pc-name">Liana Linvik</div>
+              <div class="pc-time">Yesterday · Design insight</div>
+            </div>
+          </div>
+          <div class="pc-body">A key insight from our usability sessions: users always scan the <strong>status column first</strong> in admin tables — not the name. Rethinking visual hierarchy based on actual reading patterns, not assumed ones. Design should follow behaviour, not dictate it.</div>
+          <div class="pc-footer">
+            <div class="pf-action">❤️ 87 likes</div>
+            <div class="pf-action">💬 9 comments</div>
+            <div class="pf-action">↗️ Share</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right sidebar -->
+      <div class="sidebar-right">
+        <div class="sr-card">
+          <div class="src-title">Core Skills</div>
+          <div class="skill-list">
+            <div class="skill-item"><div class="skill-row"><div class="skill-name">Product Design</div><div class="skill-pct">95%</div></div><div class="skill-bar"><div class="skill-fill" style="width:95%;background:linear-gradient(90deg,#F97316,#EF4444)"></div></div></div>
+            <div class="skill-item"><div class="skill-row"><div class="skill-name">Design Systems</div><div class="skill-pct">90%</div></div><div class="skill-bar"><div class="skill-fill" style="width:90%;background:linear-gradient(90deg,#F59E0B,#F97316)"></div></div></div>
+            <div class="skill-item"><div class="skill-row"><div class="skill-name">UX Research</div><div class="skill-pct">85%</div></div><div class="skill-bar"><div class="skill-fill" style="width:85%;background:linear-gradient(90deg,#6366F1,#8B5CF6)"></div></div></div>
+            <div class="skill-item"><div class="skill-row"><div class="skill-name">Figma</div><div class="skill-pct">98%</div></div><div class="skill-bar"><div class="skill-fill" style="width:98%;background:linear-gradient(90deg,#EC4899,#D946EF)"></div></div></div>
+            <div class="skill-item"><div class="skill-row"><div class="skill-name">Prototyping</div><div class="skill-pct">88%</div></div><div class="skill-bar"><div class="skill-fill" style="width:88%;background:linear-gradient(90deg,#10B981,#06B6D4)"></div></div></div>
+          </div>
+        </div>
+        <div class="sr-card">
+          <div class="src-title">Achievements</div>
+          <div class="badge-grid">
+            <div class="achievement-badge ab-1">🏆 Top Designer</div>
+            <div class="achievement-badge ab-2">✅ Verified Pro</div>
+            <div class="achievement-badge ab-3">🎨 Design Lead</div>
+            <div class="achievement-badge ab-4">⭐ Community Star</div>
+            <div class="achievement-badge ab-5">📚 Mentor</div>
+          </div>
+        </div>
+        <div class="sr-card">
+          <div class="src-title">Tools & Stack</div>
+          <div class="badge-grid">
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">Figma</div>
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">Framer</div>
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">Notion</div>
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">Miro</div>
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">React</div>
+            <div style="padding:5px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#374151;font-weight:500;">Tailwind</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# PowerShell capture helpers (not part of the portfolio)
+*.ps1
+
+# OS files
+.DS_Store
+Thumbs.db

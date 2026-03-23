@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>User & Group Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;width:1440px;height:900px;overflow:hidden;display:flex;}
+
+/* Sidebar */
+.sidebar{width:240px;background:#1E1B4B;display:flex;flex-direction:column;flex-shrink:0;}
+.s-logo{padding:24px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08);}
+.s-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;}
+.s-logo-text{font-size:14px;font-weight:700;color:#E2E8F0;}
+.s-section{padding:20px 12px 8px;font-size:10px;font-weight:700;color:#6366F1;letter-spacing:.1em;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;margin:0 8px 2px;cursor:pointer;font-size:13px;font-weight:500;color:#94A3B8;}
+.s-item.active{background:rgba(99,102,241,.2);color:#A5B4FC;}
+.s-item:hover{background:rgba(255,255,255,.05);}
+.s-icon{width:18px;text-align:center;font-size:14px;}
+.s-badge{margin-left:auto;background:#6366F1;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.s-divider{height:1px;background:rgba(255,255,255,.06);margin:12px 20px;}
+.s-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);}
+.s-user{display:flex;align-items:center;gap:10px;}
+.s-ava{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#A78BFA);}
+.s-user-name{font-size:12px;font-weight:600;color:#E2E8F0;}
+.s-user-role{font-size:11px;color:#64748B;}
+
+/* Main content */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar-left{display:flex;align-items:center;gap:8px;}
+.breadcrumb{font-size:13px;color:#94A3B8;}
+.breadcrumb .current{color:#0F172A;font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.btn-primary{background:#6366F1;color:#fff;border:none;}
+.btn-secondary{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;}
+.search-box{display:flex;align-items:center;gap:8px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:7px 14px;font-size:13px;color:#94A3B8;width:220px;}
+
+.content{flex:1;display:flex;overflow:hidden;}
+
+/* Users panel */
+.users-panel{flex:1;overflow:hidden;display:flex;flex-direction:column;border-right:1px solid #E2E8F0;}
+.panel-head{padding:20px 28px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E2E8F0;background:#fff;}
+.panel-title{font-size:15px;font-weight:700;color:#0F172A;}
+.tabs{display:flex;gap:0;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;}
+.tab{padding:7px 16px;font-size:12.5px;font-weight:500;cursor:pointer;color:#64748B;background:#fff;}
+.tab.active{background:#6366F1;color:#fff;}
+
+.table-wrap{flex:1;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#F8FAFC;border-bottom:2px solid #E2E8F0;}
+th{padding:10px 16px;font-size:11px;font-weight:700;color:#64748B;text-align:left;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr{border-bottom:1px solid #F1F5F9;background:#fff;cursor:pointer;}
+tbody tr:hover{background:#F8FAFC;}
+tbody tr.selected{background:#EEF2FF;}
+td{padding:12px 16px;font-size:13px;color:#374151;}
+.td-user{display:flex;align-items:center;gap:10px;}
+.ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-name{font-weight:600;color:#0F172A;font-size:13px;}
+.user-email{font-size:11px;color:#94A3B8;}
+.role-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.role-admin{background:#EEF2FF;color:#4F46E5;}
+.role-editor{background:#ECFDF5;color:#065F46;}
+.role-viewer{background:#F0F9FF;color:#0369A1;}
+.role-manager{background:#FFF7ED;color:#C2410C;}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;}
+.active-dot{background:#10B981;}
+.inactive-dot{background:#D1D5DB;}
+.status-active{color:#064E3B;font-size:12px;font-weight:500;}
+.status-inactive{color:#9CA3AF;font-size:12px;font-weight:500;}
+.checkbox{width:16px;height:16px;border-radius:4px;border:2px solid #E2E8F0;display:inline-block;}
+.checkbox.checked{background:#6366F1;border-color:#6366F1;}
+.action-btn{width:28px;height:28px;border-radius:6px;background:#F1F5F9;display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:#64748B;cursor:pointer;margin-right:4px;}
+
+/* Groups panel */
+.groups-panel{width:300px;background:#fff;display:flex;flex-direction:column;flex-shrink:0;}
+.gp-head{padding:20px 20px 16px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;}
+.gp-title{font-size:14px;font-weight:700;color:#0F172A;}
+.add-btn{width:26px;height:26px;border-radius:7px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:16px;color:#6366F1;cursor:pointer;}
+.tree{padding:12px 16px;flex:1;overflow-y:auto;}
+.tree-node{margin-bottom:2px;}
+.tree-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:#374151;}
+.tree-item:hover{background:#F8FAFC;}
+.tree-item.active{background:#EEF2FF;color:#4F46E5;}
+.tree-item.selected{background:#EEF2FF;}
+.tree-caret{font-size:10px;color:#94A3B8;width:12px;}
+.tree-icon{font-size:14px;}
+.tree-count{margin-left:auto;font-size:11px;color:#94A3B8;background:#F1F5F9;padding:1px 7px;border-radius:10px;}
+.tree-children{padding-left:22px;}
+
+/* Right detail panel */
+.detail-panel{width:280px;background:#F8FAFC;border-left:1px solid #E2E8F0;display:flex;flex-direction:column;flex-shrink:0;}
+.dp-head{padding:20px;border-bottom:1px solid #E2E8F0;background:#fff;}
+.dp-user{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 0 12px;}
+.dp-ava{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#A78BFA);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin-bottom:12px;}
+.dp-name{font-size:15px;font-weight:700;color:#0F172A;}
+.dp-role{font-size:12px;color:#6366F1;font-weight:600;margin-top:2px;}
+.dp-email{font-size:12px;color:#94A3B8;margin-top:4px;}
+.dp-body{padding:0 16px;flex:1;}
+.dp-section{margin-bottom:16px;}
+.dp-label{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.perm-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F1F5F9;font-size:12px;color:#374151;}
+.toggle{width:32px;height:18px;border-radius:9px;position:relative;flex-shrink:0;}
+.toggle-on{background:#6366F1;}
+.toggle-off{background:#E2E8F0;}
+.toggle-knob{width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:2px;}
+.toggle-on .toggle-knob{right:2px;}
+.toggle-off .toggle-knob{left:2px;}
+.dp-groups-list{display:flex;flex-direction:column;gap:4px;}
+.dp-group-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:#EEF2FF;border-radius:6px;font-size:12px;color:#4F46E5;font-weight:500;}
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-mark">A</div>
+    <div class="s-logo-text">AdminPanel</div>
+  </div>
+  <div class="s-section">People</div>
+  <div class="s-item active"><div class="s-icon">👥</div> Users<div class="s-badge">248</div></div>
+  <div class="s-item"><div class="s-icon">🗂</div> Groups</div>
+  <div class="s-item"><div class="s-icon">🔐</div> Roles & Permissions</div>
+  <div class="s-divider"></div>
+  <div class="s-section">Settings</div>
+  <div class="s-item"><div class="s-icon">🏢</div> Organisation</div>
+  <div class="s-item"><div class="s-icon">🔔</div> Notifications</div>
+  <div class="s-item"><div class="s-icon">📊</div> Audit Log</div>
+  <div class="s-item"><div class="s-icon">⚙️</div> Configuration</div>
+  <div class="s-footer">
+    <div class="s-user">
+      <div class="s-ava"></div>
+      <div>
+        <div class="s-user-name">Liana Linvik</div>
+        <div class="s-user-role">Super Admin</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="breadcrumb">Admin <span style="color:#CBD5E1">›</span> People <span style="color:#CBD5E1">›</span> <span class="current">Users</span></span>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">🔍 &nbsp; Search users...</div>
+      <button class="topbar-btn btn-secondary">⬇ Export</button>
+      <button class="topbar-btn btn-primary">+ Invite User</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Users Panel -->
+    <div class="users-panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">All Users</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:2px">248 members · 12 pending invites</div>
+        </div>
+        <div class="tabs">
+          <div class="tab active">All</div>
+          <div class="tab">Active</div>
+          <div class="tab">Pending</div>
+          <div class="tab">Suspended</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:32px"><div class="checkbox checked"></div></th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Groups</th>
+              <th>Last Active</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected">
+              <td><div class="checkbox checked"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#6366F1,#A78BFA)">ML</div><div><div class="user-name">Mia Lehtinen</div><div class="user-email">mia.lehtinen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-admin">Admin</span></td>
+              <td style="font-size:12px;color:#64748B">Engineering · Product</td>
+              <td style="font-size:12px;color:#64748B">Just now</td>
+              <td><span class="status-active"><span class="status-dot active-dot"></span>Active</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">JK</div><div><div class="user-name">Janne Korhonen</div><div class="user-email">j.korhonen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-editor">Editor</span></td>
+              <td style="font-size:12px;color:#64748B">Design</td>
+              <td style="font-size:12px;color:#64748B">2 hours ago</td>
+              <td><span class="status-active"><span class="status-dot active-dot"></span>Active</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#10B981,#059669)">AV</div><div><div class="user-name">Aino Virtanen</div><div class="user-email">a.virtanen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-manager">Manager</span></td>
+              <td style="font-size:12px;color:#64748B">Product · QA</td>
+              <td style="font-size:12px;color:#64748B">Yesterday</td>
+              <td><span class="status-active"><span class="status-dot active-dot"></span>Active</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#EC4899,#D946EF)">TH</div><div><div class="user-name">Tomas Hämäläinen</div><div class="user-email">t.hamalainen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-viewer">Viewer</span></td>
+              <td style="font-size:12px;color:#64748B">Marketing</td>
+              <td style="font-size:12px;color:#64748B">3 days ago</td>
+              <td><span class="status-inactive"><span class="status-dot inactive-dot"></span>Inactive</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">SK</div><div><div class="user-name">Sara Koskinen</div><div class="user-email">s.koskinen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-admin">Admin</span></td>
+              <td style="font-size:12px;color:#64748B">Engineering</td>
+              <td style="font-size:12px;color:#64748B">1 week ago</td>
+              <td><span class="status-active"><span class="status-dot active-dot"></span>Active</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">PL</div><div><div class="user-name">Pekka Laine</div><div class="user-email">p.laine@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-editor">Editor</span></td>
+              <td style="font-size:12px;color:#64748B">Content · Marketing</td>
+              <td style="font-size:12px;color:#64748B">Today</td>
+              <td><span class="status-active"><span class="status-dot active-dot"></span>Active</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+            <tr>
+              <td><div class="checkbox"></div></td>
+              <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#F97316,#EF4444)">RM</div><div><div class="user-name">Riku Mäkinen</div><div class="user-email">r.makinen@corp.fi</div></div></div></td>
+              <td><span class="role-badge role-viewer">Viewer</span></td>
+              <td style="font-size:12px;color:#64748B">Sales</td>
+              <td style="font-size:12px;color:#64748B">2 weeks ago</td>
+              <td><span class="status-inactive"><span class="status-dot inactive-dot"></span>Inactive</span></td>
+              <td><div class="action-btn">✏️</div><div class="action-btn">⋯</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Groups Panel -->
+    <div class="groups-panel">
+      <div class="gp-head">
+        <div class="gp-title">Groups</div>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="tree">
+        <div class="tree-node">
+          <div class="tree-item active"><div class="tree-caret">▾</div><div class="tree-icon">🏢</div> Organisation <div class="tree-count">248</div></div>
+          <div class="tree-children">
+            <div class="tree-node">
+              <div class="tree-item"><div class="tree-caret">▾</div><div class="tree-icon">💻</div> Engineering <div class="tree-count">84</div></div>
+              <div class="tree-children">
+                <div class="tree-item"><div class="tree-caret"></div><div class="tree-icon">🔧</div> Backend <div class="tree-count">38</div></div>
+                <div class="tree-item selected"><div class="tree-caret"></div><div class="tree-icon">🎨</div> Frontend <div class="tree-count">29</div></div>
+                <div class="tree-item"><div class="tree-caret"></div><div class="tree-icon">☁️</div> DevOps <div class="tree-count">17</div></div>
+              </div>
+            </div>
+            <div class="tree-node">
+              <div class="tree-item"><div class="tree-caret">▾</div><div class="tree-icon">📦</div> Product <div class="tree-count">42</div></div>
+              <div class="tree-children">
+                <div class="tree-item"><div class="tree-caret"></div><div class="tree-icon">🗺</div> Strategy <div class="tree-count">18</div></div>
+                <div class="tree-item"><div class="tree-caret"></div><div class="tree-icon">🧪</div> QA <div class="tree-count">24</div></div>
+              </div>
+            </div>
+            <div class="tree-item"><div class="tree-caret">▸</div><div class="tree-icon">🎯</div> Design <div class="tree-count">31</div></div>
+            <div class="tree-item"><div class="tree-caret">▸</div><div class="tree-icon">📣</div> Marketing <div class="tree-count">56</div></div>
+            <div class="tree-item"><div class="tree-caret">▸</div><div class="tree-icon">💼</div> Sales <div class="tree-count">35</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <div class="detail-panel">
+      <div class="dp-head">
+        <div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:14px">User Details</div>
+        <div class="dp-user">
+          <div class="dp-ava">ML</div>
+          <div class="dp-name">Mia Lehtinen</div>
+          <div class="dp-role">Super Admin</div>
+          <div class="dp-email">mia.lehtinen@corp.fi</div>
+        </div>
+      </div>
+      <div class="dp-body" style="overflow-y:auto;padding-top:16px;">
+        <div class="dp-section">
+          <div class="dp-label">Groups</div>
+          <div class="dp-groups-list">
+            <div class="dp-group-tag">💻 Engineering</div>
+            <div class="dp-group-tag">📦 Product</div>
+            <div class="dp-group-tag">🔧 Backend</div>
+          </div>
+        </div>
+        <div class="dp-section">
+          <div class="dp-label">Permissions</div>
+          <div class="perm-row">Manage users<div class="toggle toggle-on"><div class="toggle-knob"></div></div></div>
+          <div class="perm-row">Edit content<div class="toggle toggle-on"><div class="toggle-knob"></div></div></div>
+          <div class="perm-row">View billing<div class="toggle toggle-on"><div class="toggle-knob"></div></div></div>
+          <div class="perm-row">Export data<div class="toggle toggle-on"><div class="toggle-knob"></div></div></div>
+          <div class="perm-row">Delete records<div class="toggle toggle-off"><div class="toggle-knob"></div></div></div>
+          <div class="perm-row">API access<div class="toggle toggle-on"><div class="toggle-knob"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

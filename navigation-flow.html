@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Flow — UI Portfolio</title>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f1117; color: #e2e8f0;
+    padding: 48px 40px; min-width: 1300px;
+  }
+  h1 { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 48px; }
+
+  /* Grid canvas */
+  .canvas {
+    position: relative;
+    width: 1220px;
+    height: 880px;
+  }
+
+  /* Screen cards */
+  .screen {
+    position: absolute;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 12.5px;
+    font-weight: 600;
+    display: flex; flex-direction: column; gap: 4px;
+    cursor: default;
+    border: 1.5px solid transparent;
+  }
+  .screen .label { font-size: 11px; font-weight: 400; color: #64748b; }
+
+  .s-cover     { background: #1a1a2e; border-color: #6366f1; color: #a5b4fc; }
+  .s-mgmt      { background: #1e1628; border-color: #8b5cf6; color: #c4b5fd; }
+  .s-editors   { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-hidden    { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-gcreate   { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-ginspect  { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-umgmt     { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-uinspect  { background: #1e1628; border-color: #7c3aed; color: #c4b5fd; }
+  .s-browser   { background: #0c1f2e; border-color: #0ea5e9; color: #7dd3fc; }
+  .s-mobile    { background: #0c201a; border-color: #10b981; color: #6ee7b7; }
+  .s-test      { background: #1f1a0c; border-color: #f59e0b; color: #fcd34d; }
+  .s-profile   { background: #1f0c18; border-color: #ec4899; color: #f9a8d4; }
+  .s-reflect   { background: #1f130c; border-color: #f97316; color: #fdba74; }
+
+  /* SVG arrows overlay */
+  svg.arrows {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .arr-primary { stroke: #475569; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+  .arr-back    { stroke: #334155; stroke-width: 1; fill: none; stroke-dasharray: 5 3; marker-end: url(#arrowheadDim); }
+  .arr-intra   { stroke: #6366f1; stroke-width: 1.2; fill: none; stroke-dasharray: 3 3; marker-end: url(#arrowheadPurple); opacity:.7; }
+
+  /* Legend */
+  .legend { margin-top: 40px; display: flex; gap: 32px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; }
+  .leg-line { width: 32px; height: 2px; }
+  .leg-dash { width: 32px; height: 2px; background: repeating-linear-gradient(90deg,#334155 0 5px,transparent 5px 8px); }
+  .leg-dot  { width: 32px; height: 2px; background: repeating-linear-gradient(90deg,#6366f1 0 3px,transparent 3px 6px); }
+
+  .section-badge {
+    display: inline-block; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; padding: 2px 6px; border-radius: 4px; margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Navigation Flow</h1>
+<p class="subtitle">UI Portfolio — Screen-to-screen navigation paths</p>
+
+<div class="canvas">
+
+  <!-- SVG arrow defs + lines -->
+  <svg class="arrows" viewBox="0 0 1220 880" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+      </marker>
+      <marker id="arrowheadDim" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#334155"/>
+      </marker>
+      <marker id="arrowheadPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#6366f1" opacity=".7"/>
+      </marker>
+    </defs>
+
+    <!-- Cover → each section hub (primary) -->
+    <path class="arr-primary" d="M 220 70 L 350 70"/>         <!-- cover → User&Group hub -->
+    <path class="arr-primary" d="M 140 90 L 140 210 L 350 280"/>  <!-- cover → Browser -->
+    <path class="arr-primary" d="M 140 90 L 140 430 L 350 430"/>  <!-- cover → Mobile -->
+    <path class="arr-primary" d="M 140 90 L 140 580 L 350 580"/>  <!-- cover → Test -->
+    <path class="arr-primary" d="M 220 50 Q 220 -20 800 -20 Q 1060 -20 1060 60"/>   <!-- cover → Profile -->
+    <path class="arr-primary" d="M 220 70 Q 230 -40 1180 -40 Q 1200 30 1190 60"/>  <!-- cover → Reflect -->
+
+    <!-- User&Group hub → sub-screens -->
+    <path class="arr-intra" d="M 510 55 L 630 55"/>   <!-- hub → Editors -->
+    <path class="arr-intra" d="M 510 80 Q 520 150 630 155"/>  <!-- hub → Hidden Groups -->
+    <path class="arr-intra" d="M 510 80 Q 520 260 630 260"/>  <!-- hub → Group Creation -->
+    <path class="arr-intra" d="M 510 80 Q 520 360 630 360"/>  <!-- hub → Group Inspection -->
+    <path class="arr-intra" d="M 510 80 Q 520 460 630 470"/>  <!-- hub → User Mgmt -->
+    <path class="arr-intra" d="M 510 80 Q 520 560 630 570"/>  <!-- hub → User Inspection -->
+
+    <!-- Cross-links within admin tool -->
+    <path class="arr-intra" d="M 810 385 Q 870 425 810 465"/>   <!-- Group Inspection ↔ User Mgmt -->
+    <path class="arr-intra" d="M 810 490 Q 870 530 810 575"/>   <!-- User Mgmt → User Inspection -->
+    <path class="arr-intra" d="M 810 60 Q 870 110 810 165"/>    <!-- Editors → Hidden Groups -->
+
+    <!-- Back to cover (dashed) -->
+    <path class="arr-back" d="M 390 290 Q 300 290 220 90"/>
+    <path class="arr-back" d="M 390 440 Q 260 440 220 90"/>
+  </svg>
+
+  <!-- ── SCREENS ── -->
+
+  <!-- Cover -->
+  <div class="screen s-cover" style="left:40px; top:40px; width:180px;">
+    <span class="section-badge" style="background:#6366f1;color:#fff">Hub</span>
+    Portfolio Cover
+    <span class="label">Entry point</span>
+  </div>
+
+  <!-- User & Group section hub -->
+  <div class="screen s-mgmt" style="left:350px; top:40px; width:160px;">
+    <span class="section-badge" style="background:#7c3aed;color:#fff">Section</span>
+    User &amp; Group Mgmt
+    <span class="label">Admin tool hub</span>
+  </div>
+
+  <!-- Sub-screens of U&G -->
+  <div class="screen s-editors" style="left:630px; top:30px; width:180px;">
+    Editors View
+    <span class="label">Grid + detail panel</span>
+  </div>
+  <div class="screen s-hidden" style="left:630px; top:130px; width:180px;">
+    Hidden Groups
+    <span class="label">Admin-only list</span>
+  </div>
+  <div class="screen s-gcreate" style="left:630px; top:235px; width:180px;">
+    Group Creation
+    <span class="label">4-step wizard</span>
+  </div>
+  <div class="screen s-ginspect" style="left:630px; top:340px; width:180px;">
+    Group Inspection
+    <span class="label">Members &amp; perms</span>
+  </div>
+  <div class="screen s-umgmt" style="left:630px; top:445px; width:180px;">
+    User Management
+    <span class="label">Full user table</span>
+  </div>
+  <div class="screen s-uinspect" style="left:630px; top:550px; width:180px;">
+    User Inspection
+    <span class="label">Profile detail</span>
+  </div>
+
+  <!-- Other portfolio sections (right column) -->
+  <div class="screen s-browser" style="left:350px; top:260px; width:160px;">
+    <span class="section-badge" style="background:#0ea5e9;color:#fff">Section</span>
+    Browser
+    <span class="label">Chrome UI mockup</span>
+  </div>
+  <div class="screen s-mobile" style="left:350px; top:410px; width:160px;">
+    <span class="section-badge" style="background:#10b981;color:#fff">Section</span>
+    Mobile App
+    <span class="label">Bloom Wellness</span>
+  </div>
+  <div class="screen s-test" style="left:350px; top:560px; width:160px;">
+    <span class="section-badge" style="background:#f59e0b;color:#fff">Section</span>
+    Test Dashboard
+    <span class="label">QA tool</span>
+  </div>
+  <div class="screen s-profile" style="left:920px; top:40px; width:160px;">
+    <span class="section-badge" style="background:#ec4899;color:#fff">Section</span>
+    Profile
+    <span class="label">Social profile</span>
+  </div>
+  <div class="screen s-reflect" style="left:1060px; top:40px; width:155px;">
+    <span class="section-badge" style="background:#f97316;color:#fff">Section</span>
+    Self-Reflection
+    <span class="label">Journal &amp; mood</span>
+  </div>
+
+</div><!-- .canvas -->
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="leg-line" style="background:#475569;"></div>
+    Primary navigation
+  </div>
+  <div class="legend-item">
+    <div class="leg-dash"></div>
+    Back navigation
+  </div>
+  <div class="legend-item">
+    <div class="leg-dot"></div>
+    In-section links
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#6366f1;"></div>
+    User &amp; Group section
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#0ea5e9;"></div>
+    Browser
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#10b981;"></div>
+    Mobile App
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#f59e0b;"></div>
+    Test
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#ec4899;"></div>
+    Profile
+  </div>
+  <div class="legend-item">
+    <div style="width:12px;height:12px;border-radius:3px;background:#f97316;"></div>
+    Self-Reflection
+  </div>
+</div>
+
+</body>
+</html>

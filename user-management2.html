@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>User Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;width:1440px;height:900px;overflow:hidden;display:flex;}
+.sidebar{width:240px;background:#1E1B4B;display:flex;flex-direction:column;flex-shrink:0;}
+.s-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08);}
+.s-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
+.s-logo-text{font-size:13.5px;font-weight:700;color:#E2E8F0;}
+.s-section{padding:18px 12px 4px;font-size:9.5px;font-weight:700;color:#6366F1;letter-spacing:.1em;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:7px;margin:0 8px 1px;cursor:pointer;font-size:13px;font-weight:500;color:#94A3B8;}
+.s-item.active{background:rgba(99,102,241,.2);color:#A5B4FC;}
+.s-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(99,102,241,.35);color:#A5B4FC;}
+.s-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);}
+.s-user{display:flex;align-items:center;gap:9px;}
+.s-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#A78BFA);font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
+.s-uname{font-size:12px;font-weight:600;color:#E2E8F0;}
+.s-urole{font-size:11px;color:#64748B;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #E2E8F0;height:56px;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0;}
+.bc{font-size:13px;color:#94A3B8;}
+.bc .cur{color:#0F172A;font-weight:600;}
+.tb-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.btn{padding:7px 15px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.btn-primary{background:#6366F1;color:#fff;}
+.btn-ghost{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;}
+.search{display:flex;align-items:center;gap:8px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:7px 12px;font-size:13px;color:#94A3B8;width:220px;}
+
+/* Stats row */
+.stats-bar{background:#fff;border-bottom:1px solid #E2E8F0;display:flex;flex-shrink:0;}
+.stat{flex:1;padding:14px 24px;border-right:1px solid #E2E8F0;display:flex;align-items:center;gap:12px;}
+.stat:last-child{border-right:none;}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.stat-val{font-size:18px;font-weight:800;color:#0F172A;}
+.stat-label{font-size:11px;color:#94A3B8;margin-top:1px;}
+.stat-delta{font-size:11px;font-weight:600;margin-top:2px;}
+.delta-up{color:#10B981;}
+.delta-down{color:#EF4444;}
+
+/* Filters row */
+.filters-row{background:#fff;border-bottom:1px solid #E2E8F0;padding:10px 24px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.filter-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #E2E8F0;color:#64748B;background:#fff;}
+.filter-chip.active{background:#EEF2FF;color:#4F46E5;border-color:#C7D2FE;}
+.filter-chip.active-red{background:#FEF2F2;color:#DC2626;border-color:#FECACA;}
+.filter-sep{width:1px;height:20px;background:#E2E8F0;margin:0 4px;}
+.bulk-bar{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.bulk-count{font-size:12.5px;color:#64748B;font-weight:500;}
+.bulk-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+.bb-role{background:#EEF2FF;color:#4F46E5;}
+.bb-group{background:#F0FDF4;color:#166534;}
+.bb-suspend{background:#FEF2F2;color:#DC2626;}
+.bb-delete{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;}
+
+/* Table */
+.table-area{flex:1;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#F8FAFC;border-bottom:2px solid #E2E8F0;position:sticky;top:0;}
+th{padding:9px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-align:left;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr{border-bottom:1px solid #F1F5F9;background:#fff;}
+tbody tr:hover{background:#FAFAFA;}
+tbody tr.selected-row{background:#FAFBFF;}
+td{padding:10px 14px;font-size:12.5px;}
+.checkbox{width:15px;height:15px;border-radius:4px;border:2px solid #E2E8F0;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.checkbox.checked{background:#6366F1;border-color:#6366F1;color:#fff;font-size:9px;}
+.td-user{display:flex;align-items:center;gap:9px;}
+.ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.u-name{font-weight:600;color:#0F172A;font-size:13px;}
+.u-email{font-size:11px;color:#94A3B8;}
+.role-badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:10px;font-size:11.5px;font-weight:600;}
+.rb-super{background:#F5F3FF;color:#6D28D9;}
+.rb-admin{background:#EEF2FF;color:#4F46E5;}
+.rb-editor{background:#ECFDF5;color:#065F46;}
+.rb-viewer{background:#F0F9FF;color:#0369A1;}
+.rb-manager{background:#FFF7ED;color:#C2410C;}
+.status{font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px;}
+.dot{width:6px;height:6px;border-radius:50%;}
+.dot-green{background:#10B981;}
+.dot-gray{background:#D1D5DB;}
+.dot-yellow{background:#F59E0B;}
+.dot-red{background:#EF4444;}
+.groups-cell{display:flex;gap:4px;flex-wrap:wrap;}
+.g-chip{padding:1px 7px;background:#F1F5F9;border-radius:6px;font-size:11px;color:#475569;}
+.actions{display:flex;gap:4px;}
+.act-btn{width:26px;height:26px;border-radius:6px;background:#F1F5F9;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;}
+.mfa-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:8px;font-size:10.5px;font-weight:600;}
+.mfa-on{background:#F0FDF4;color:#166534;}
+.mfa-off{background:#FEF2F2;color:#DC2626;}
+.pagination{background:#fff;border-top:1px solid #E2E8F0;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-info{font-size:12.5px;color:#64748B;}
+.page-btns{display:flex;gap:4px;}
+.pg-btn{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid #E2E8F0;color:#374151;}
+.pg-btn.active{background:#6366F1;color:#fff;border-color:#6366F1;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="s-logo"><div class="s-logo-mark">A</div><div class="s-logo-text">AdminPanel</div></div>
+  <div class="s-section">People</div>
+  <div class="s-item active"><span>👥</span> Users <div class="s-badge">248</div></div>
+  <div class="s-item"><span>✏️</span> Editors</div>
+  <div class="s-item"><span>🗂</span> Groups</div>
+  <div class="s-item"><span>🔐</span> Roles & Permissions</div>
+  <div class="s-section">Settings</div>
+  <div class="s-item"><span>📊</span> Audit Log</div>
+  <div class="s-item"><span>⚙️</span> Configuration</div>
+  <div class="s-footer"><div class="s-user"><div class="s-ava">LL</div><div><div class="s-uname">Liana Linvik</div><div class="s-urole">Super Admin</div></div></div></div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="bc">Admin <span style="color:#CBD5E1">›</span> People <span style="color:#CBD5E1">›</span> <span class="cur">All Users</span></div>
+    <div class="tb-right">
+      <div class="search">🔍 &nbsp;Search by name, email…</div>
+      <div class="btn btn-ghost">⬇ Export CSV</div>
+      <div class="btn btn-ghost">📥 Import</div>
+      <div class="btn btn-primary">+ Invite Users</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-icon" style="background:#EEF2FF">👥</div><div><div class="stat-val">248</div><div class="stat-label">Total Users</div><div class="stat-delta delta-up">↑ 12 this month</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#F0FDF4">✅</div><div><div class="stat-val">231</div><div class="stat-label">Active</div><div class="stat-delta delta-up">↑ 8 this week</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#FEF2F2">⏱</div><div><div class="stat-val">12</div><div class="stat-label">Pending Invite</div><div class="stat-delta" style="color:#94A3B8">3 expired</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#FFF7ED">⛔</div><div><div class="stat-val">5</div><div class="stat-label">Suspended</div><div class="stat-delta delta-down">↑ 2 this week</div></div></div>
+    <div class="stat"><div class="stat-icon" style="background:#F5F3FF">🛡</div><div><div class="stat-val">89%</div><div class="stat-label">MFA Enabled</div><div class="stat-delta delta-up">↑ 4% this month</div></div></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-row">
+    <div class="filter-chip active">All Users (248)</div>
+    <div class="filter-chip">Active (231)</div>
+    <div class="filter-chip">Pending (12)</div>
+    <div class="filter-chip active-red">Suspended (5)</div>
+    <div class="filter-sep"></div>
+    <div class="filter-chip">Role ▾</div>
+    <div class="filter-chip">Group ▾</div>
+    <div class="filter-chip">MFA ▾</div>
+    <div class="filter-chip">Last Active ▾</div>
+    <div class="bulk-bar">
+      <div class="bulk-count">3 selected</div>
+      <div class="bulk-btn bb-role">Change Role</div>
+      <div class="bulk-btn bb-group">Add to Group</div>
+      <div class="bulk-btn bb-suspend">Suspend</div>
+      <div class="bulk-btn bb-delete">Delete</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-area">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:32px"><div class="checkbox checked">✓</div></th>
+          <th>User</th>
+          <th>Role</th>
+          <th>Groups</th>
+          <th>MFA</th>
+          <th>Last Active</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="selected-row">
+          <td><div class="checkbox checked">✓</div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#6D28D9,#8B5CF6)">LL</div><div><div class="u-name">Liana Linvik</div><div class="u-email">liana@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-super">Super Admin</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Engineering</div><div class="g-chip">+4</div></div></td>
+          <td><div class="mfa-badge mfa-on">🛡 On</div></td>
+          <td style="font-size:12px;color:#64748B">Now</td>
+          <td><div class="status"><div class="dot dot-green"></div>Active</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr class="selected-row">
+          <td><div class="checkbox checked">✓</div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#10B981,#059669)">AV</div><div><div class="u-name">Aino Virtanen</div><div class="u-email">aino.v@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-manager">Manager</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Product</div><div class="g-chip">QA</div></div></td>
+          <td><div class="mfa-badge mfa-on">🛡 On</div></td>
+          <td style="font-size:12px;color:#64748B">2h ago</td>
+          <td><div class="status"><div class="dot dot-green"></div>Active</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr class="selected-row">
+          <td><div class="checkbox checked">✓</div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#F59E0B,#D97706)">JK</div><div><div class="u-name">Janne Korhonen</div><div class="u-email">janne.k@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-editor">Editor</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Design</div></div></td>
+          <td><div class="mfa-badge mfa-off">⚠️ Off</div></td>
+          <td style="font-size:12px;color:#64748B">1d ago</td>
+          <td><div class="status"><div class="dot dot-green"></div>Active</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr>
+          <td><div class="checkbox"></div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#4F46E5,#6366F1)">ML</div><div><div class="u-name">Miika Leppänen</div><div class="u-email">miika@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-admin">Admin</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Engineering</div><div class="g-chip">Frontend</div></div></td>
+          <td><div class="mfa-badge mfa-on">🛡 On</div></td>
+          <td style="font-size:12px;color:#64748B">3h ago</td>
+          <td><div class="status"><div class="dot dot-green"></div>Active</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr>
+          <td><div class="checkbox"></div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#EC4899,#DB2777)">TN</div><div><div class="u-name">Tuulia Nieminen</div><div class="u-email">tuulia@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-viewer">Viewer</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Marketing</div></div></td>
+          <td><div class="mfa-badge mfa-off">⚠️ Off</div></td>
+          <td style="font-size:12px;color:#64748B">1w ago</td>
+          <td><div class="status"><div class="dot dot-yellow"></div>Idle</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr style="background:#FEF2F2">
+          <td><div class="checkbox"></div></td>
+          <td><div class="td-user"><div class="ava" style="background:#CBD5E1">RM</div><div><div class="u-name">Riku Mäkinen</div><div class="u-email">riku@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-viewer">Viewer</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Sales</div></div></td>
+          <td><div class="mfa-badge mfa-off">⚠️ Off</div></td>
+          <td style="font-size:12px;color:#94A3B8">3w ago</td>
+          <td><div class="status"><div class="dot dot-red"></div><span style="color:#EF4444">Suspended</span></div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn" style="background:#ECFDF5;color:#10B981">✓</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+        <tr>
+          <td><div class="checkbox"></div></td>
+          <td><div class="td-user"><div class="ava" style="background:linear-gradient(135deg,#0EA5E9,#0284C7)">SK</div><div><div class="u-name">Sara Koskinen</div><div class="u-email">sara@corp.fi</div></div></div></td>
+          <td><span class="role-badge rb-admin">Admin</span></td>
+          <td><div class="groups-cell"><div class="g-chip">Engineering</div><div class="g-chip">+2</div></div></td>
+          <td><div class="mfa-badge mfa-on">🛡 On</div></td>
+          <td style="font-size:12px;color:#64748B">Yesterday</td>
+          <td><div class="status"><div class="dot dot-green"></div>Active</div></td>
+          <td><div class="actions"><div class="act-btn">✏️</div><div class="act-btn">🔑</div><div class="act-btn">⋯</div></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="page-info">Showing 1–25 of 248 users</div>
+    <div class="page-btns">
+      <div class="pg-btn">‹</div>
+      <div class="pg-btn active">1</div>
+      <div class="pg-btn">2</div>
+      <div class="pg-btn">3</div>
+      <div class="pg-btn">…</div>
+      <div class="pg-btn">10</div>
+      <div class="pg-btn">›</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

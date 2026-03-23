@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Hidden Groups</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;width:1440px;height:900px;overflow:hidden;display:flex;}
+
+.sidebar{width:240px;background:#1E1B4B;display:flex;flex-direction:column;flex-shrink:0;}
+.s-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08);}
+.s-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
+.s-logo-text{font-size:13.5px;font-weight:700;color:#E2E8F0;}
+.s-section{padding:18px 12px 4px;font-size:9.5px;font-weight:700;color:#6366F1;letter-spacing:.1em;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:7px;margin:0 8px 1px;cursor:pointer;font-size:13px;font-weight:500;color:#94A3B8;}
+.s-item.active{background:rgba(99,102,241,.2);color:#A5B4FC;}
+.s-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(99,102,241,.35);color:#A5B4FC;}
+.s-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);}
+.s-user{display:flex;align-items:center;gap:9px;}
+.s-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#A78BFA);font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
+.s-uname{font-size:12px;font-weight:600;color:#E2E8F0;}
+.s-urole{font-size:11px;color:#64748B;}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #E2E8F0;height:56px;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0;}
+.bc{font-size:13px;color:#94A3B8;}
+.bc .cur{color:#0F172A;font-weight:600;}
+.tb-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.btn{padding:7px 15px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;}
+.btn-primary{background:#6366F1;color:#fff;}
+.btn-ghost{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;}
+.search{display:flex;align-items:center;gap:8px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:7px 12px;font-size:13px;color:#94A3B8;width:200px;}
+
+.content{flex:1;display:flex;overflow:hidden;}
+
+/* Groups tree panel */
+.tree-panel{width:280px;background:#fff;border-right:1px solid #E2E8F0;display:flex;flex-direction:column;flex-shrink:0;}
+.tp-head{padding:18px 16px 12px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;}
+.tp-title{font-size:13px;font-weight:700;color:#0F172A;}
+.tp-tabs{display:flex;gap:0;border:1px solid #E2E8F0;border-radius:7px;overflow:hidden;margin:0 16px 12px;}
+.tp-tab{flex:1;padding:6px;font-size:11.5px;font-weight:500;cursor:pointer;color:#64748B;text-align:center;background:#fff;}
+.tp-tab.active{background:#6366F1;color:#fff;}
+.tree{flex:1;overflow-y:auto;padding:8px 10px;}
+.tree-node{margin-bottom:1px;}
+.tree-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;cursor:pointer;font-size:12.5px;}
+.tree-item:hover{background:#F8FAFC;}
+.tree-item.active{background:#EEF2FF;color:#4F46E5;}
+.tree-caret{font-size:10px;color:#94A3B8;width:12px;flex-shrink:0;}
+.tree-icon{font-size:13px;}
+.tree-count{margin-left:auto;font-size:10.5px;color:#94A3B8;background:#F1F5F9;padding:1px 6px;border-radius:8px;}
+.tree-hidden-badge{margin-left:auto;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
+.tree-children{padding-left:20px;}
+
+/* Main area */
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.ma-head{padding:18px 24px 14px;border-bottom:1px solid #F1F5F9;background:#fff;flex-shrink:0;}
+.warning-banner{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:1px solid #FCD34D;border-radius:10px;padding:12px 16px;display:flex;align-items:flex-start;gap:10px;margin:16px 24px 0;flex-shrink:0;}
+.wb-icon{font-size:16px;margin-top:1px;flex-shrink:0;}
+.wb-text{font-size:13px;color:#92400E;line-height:1.5;}
+.wb-text strong{font-weight:700;}
+
+.hidden-table{flex:1;overflow-y:auto;margin:0;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#F8FAFC;border-bottom:2px solid #E2E8F0;}
+th{padding:10px 20px;font-size:11px;font-weight:700;color:#64748B;text-align:left;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr{border-bottom:1px solid #F1F5F9;background:#fff;}
+tbody tr:hover{background:#FAFAFA;}
+td{padding:12px 20px;font-size:13px;}
+.group-name-cell{display:flex;align-items:center;gap:10px;}
+.group-icon-wrap{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid rgba(0,0,0,.05);}
+.gn-text{font-weight:600;color:#0F172A;font-size:13px;}
+.gn-parent{font-size:11px;color:#94A3B8;}
+.visibility-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.vb-hidden{background:#FEF2F2;color:#EF4444;border:1px solid #FECACA;}
+.vb-restricted{background:#FFF7ED;color:#D97706;border:1px solid #FDE68A;}
+.vb-visible{background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;}
+.who-sees{display:flex;align-items:center;gap:4px;}
+.ws-chip{padding:2px 8px;background:#EEF2FF;border-radius:10px;font-size:11px;color:#4F46E5;font-weight:500;}
+.action-cell{display:flex;gap:6px;}
+.act-btn{padding:5px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;}
+.ab-show{background:#EEF2FF;color:#4F46E5;}
+.ab-edit{background:#F1F5F9;color:#475569;}
+.toggle-cell{display:flex;align-items:center;gap:8px;}
+.toggle{width:36px;height:20px;border-radius:10px;position:relative;cursor:pointer;flex-shrink:0;}
+.toggle-on{background:#6366F1;}
+.toggle-off{background:#E2E8F0;}
+.toggle-knob{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-on .toggle-knob{right:2px;}
+.toggle-off .toggle-knob{left:2px;}
+.toggle-label{font-size:12px;font-weight:500;}
+
+/* Right: hidden group detail */
+.hg-detail{width:300px;background:#fff;border-left:1px solid #E2E8F0;display:flex;flex-direction:column;flex-shrink:0;}
+.hgd-head{padding:18px 18px 14px;border-bottom:1px solid #F1F5F9;}
+.hgd-icon{width:44px;height:44px;border-radius:10px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;}
+.hgd-name{font-size:14px;font-weight:700;color:#0F172A;}
+.hgd-path{font-size:11px;color:#94A3B8;margin-top:3px;}
+.hgd-body{padding:14px 18px;flex:1;overflow-y:auto;}
+.hgd-sect{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;margin-top:14px;}
+.hgd-sect:first-child{margin-top:0;}
+.why-hidden{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;font-size:12px;color:#991B1B;line-height:1.5;display:flex;gap:8px;}
+.reason-list{display:flex;flex-direction:column;gap:4px;}
+.rl-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#374151;padding:5px 0;border-bottom:1px solid #F8FAFC;}
+.rl-icon{font-size:13px;flex-shrink:0;}
+.access-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F8FAFC;}
+.ar-label{font-size:12.5px;color:#374151;}
+.ar-val{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;}
+.av-denied{background:#FEF2F2;color:#DC2626;}
+.av-allowed{background:#F0FDF4;color:#16A34A;}
+.reveal-btn{width:100%;padding:10px;background:#6366F1;color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="s-logo"><div class="s-logo-mark">A</div><div class="s-logo-text">AdminPanel</div></div>
+  <div class="s-section">People</div>
+  <div class="s-item"><span>👥</span> Users</div>
+  <div class="s-item"><span>✏️</span> Editors</div>
+  <div class="s-item active"><span>🗂</span> Groups <div class="s-badge">12</div></div>
+  <div class="s-item"><span>🔐</span> Roles & Permissions</div>
+  <div class="s-section">Settings</div>
+  <div class="s-item"><span>📊</span> Audit Log</div>
+  <div class="s-item"><span>⚙️</span> Configuration</div>
+  <div class="s-footer"><div class="s-user"><div class="s-ava">LL</div><div><div class="s-uname">Liana Linvik</div><div class="s-urole">Super Admin</div></div></div></div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="bc">Admin <span style="color:#CBD5E1">›</span> Groups <span style="color:#CBD5E1">›</span> <span class="cur">Hidden Groups</span></div>
+    <div class="tb-right">
+      <div class="search">🔍 &nbsp;Search groups…</div>
+      <div class="btn btn-ghost">👁 Show All</div>
+      <div class="btn btn-primary">+ New Group</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Tree panel -->
+    <div class="tree-panel">
+      <div class="tp-head"><div class="tp-title">Group Tree</div></div>
+      <div class="tp-tabs">
+        <div class="tp-tab">All</div>
+        <div class="tp-tab active">Hidden</div>
+        <div class="tp-tab">Restricted</div>
+      </div>
+      <div class="tree">
+        <div class="tree-node">
+          <div class="tree-item"><div class="tree-caret">▾</div><div class="tree-icon">🏢</div> Organisation <div class="tree-count">12</div></div>
+          <div class="tree-children">
+            <div class="tree-item"><div class="tree-caret">▾</div><div class="tree-icon">💻</div> Engineering <div class="tree-count">3</div></div>
+            <div class="tree-children" style="padding-left:20px">
+              <div class="tree-item active"><div class="tree-caret"></div><span style="font-size:12px">🔒</span> Security Ops <div class="tree-hidden-badge">Hidden</div></div>
+              <div class="tree-item"><div class="tree-caret"></div><span style="font-size:12px">🔒</span> On-call Rota <div class="tree-hidden-badge">Hidden</div></div>
+            </div>
+            <div class="tree-item"><div class="tree-caret">▾</div><div class="tree-icon">📦</div> Product <div class="tree-count">2</div></div>
+            <div class="tree-children" style="padding-left:20px">
+              <div class="tree-item"><div class="tree-caret"></div><span style="font-size:12px">🔒</span> Roadmap Steering <div class="tree-hidden-badge">Hidden</div></div>
+            </div>
+            <div class="tree-item"><div class="tree-caret">▸</div><div class="tree-icon">💼</div> Executive <div class="tree-hidden-badge">Hidden</div></div>
+            <div class="tree-item"><div class="tree-caret">▸</div><div class="tree-icon">⚖️</div> Legal & Compliance <div class="tree-hidden-badge">Hidden</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main area -->
+    <div class="main-area">
+      <div class="ma-head">
+        <div style="font-size:15px;font-weight:700;color:#0F172A">Hidden Groups</div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:3px">5 groups hidden from regular users · Only admins can see these</div>
+      </div>
+      <div class="warning-banner">
+        <div class="wb-icon">⚠️</div>
+        <div class="wb-text"><strong>Admin-only view.</strong> These groups are invisible to non-admin users. Members can see their own membership, but cannot browse or discover these groups in the directory.</div>
+      </div>
+      <div class="hidden-table" style="margin-top:0;padding:0;">
+        <table style="margin-top:16px;">
+          <thead>
+            <tr>
+              <th>Group Name</th>
+              <th>Visibility</th>
+              <th>Who Can See</th>
+              <th>Members</th>
+              <th>Hidden Since</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#FEF2F2;">
+              <td><div class="group-name-cell"><div class="group-icon-wrap" style="background:#FEE2E2">🔒</div><div><div class="gn-text">Security Ops</div><div class="gn-parent">Engineering</div></div></div></td>
+              <td><div class="visibility-badge vb-hidden">🔒 Hidden</div></td>
+              <td><div class="who-sees"><div class="ws-chip">Admins</div><div class="ws-chip">Members</div></div></td>
+              <td style="font-size:13px;color:#374151">8</td>
+              <td style="font-size:12px;color:#94A3B8">6 months ago</td>
+              <td><div class="action-cell"><div class="act-btn ab-show">Reveal</div><div class="act-btn ab-edit">Edit</div></div></td>
+            </tr>
+            <tr>
+              <td><div class="group-name-cell"><div class="group-icon-wrap" style="background:#FEE2E2">🔒</div><div><div class="gn-text">On-call Rota</div><div class="gn-parent">Engineering</div></div></div></td>
+              <td><div class="visibility-badge vb-hidden">🔒 Hidden</div></td>
+              <td><div class="who-sees"><div class="ws-chip">Admins</div><div class="ws-chip">Members</div></div></td>
+              <td style="font-size:13px;color:#374151">12</td>
+              <td style="font-size:12px;color:#94A3B8">3 months ago</td>
+              <td><div class="action-cell"><div class="act-btn ab-show">Reveal</div><div class="act-btn ab-edit">Edit</div></div></td>
+            </tr>
+            <tr>
+              <td><div class="group-name-cell"><div class="group-icon-wrap" style="background:#FEF3C7">🔒</div><div><div class="gn-text">Roadmap Steering</div><div class="gn-parent">Product</div></div></div></td>
+              <td><div class="visibility-badge vb-restricted">⚠️ Restricted</div></td>
+              <td><div class="who-sees"><div class="ws-chip">Admins</div><div class="ws-chip">Leads</div></div></td>
+              <td style="font-size:13px;color:#374151">6</td>
+              <td style="font-size:12px;color:#94A3B8">1 year ago</td>
+              <td><div class="action-cell"><div class="act-btn ab-show">Reveal</div><div class="act-btn ab-edit">Edit</div></div></td>
+            </tr>
+            <tr>
+              <td><div class="group-name-cell"><div class="group-icon-wrap" style="background:#FEE2E2">🔒</div><div><div class="gn-text">Executive</div><div class="gn-parent">Organisation</div></div></div></td>
+              <td><div class="visibility-badge vb-hidden">🔒 Hidden</div></td>
+              <td><div class="who-sees"><div class="ws-chip">Admins</div></div></td>
+              <td style="font-size:13px;color:#374151">5</td>
+              <td style="font-size:12px;color:#94A3B8">2 years ago</td>
+              <td><div class="action-cell"><div class="act-btn ab-show">Reveal</div><div class="act-btn ab-edit">Edit</div></div></td>
+            </tr>
+            <tr>
+              <td><div class="group-name-cell"><div class="group-icon-wrap" style="background:#FEE2E2">🔒</div><div><div class="gn-text">Legal & Compliance</div><div class="gn-parent">Organisation</div></div></div></td>
+              <td><div class="visibility-badge vb-hidden">🔒 Hidden</div></td>
+              <td><div class="who-sees"><div class="ws-chip">Admins</div><div class="ws-chip">Legal</div></div></td>
+              <td style="font-size:13px;color:#374151">4</td>
+              <td style="font-size:12px;color:#94A3B8">1 year ago</td>
+              <td><div class="action-cell"><div class="act-btn ab-show">Reveal</div><div class="act-btn ab-edit">Edit</div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right detail panel -->
+    <div class="hg-detail">
+      <div class="hgd-head">
+        <div class="hgd-icon">🔒</div>
+        <div class="hgd-name">Security Ops</div>
+        <div class="hgd-path">Organisation › Engineering › Security Ops</div>
+      </div>
+      <div class="hgd-body">
+        <div class="hgd-sect">Why Hidden</div>
+        <div class="why-hidden"><span>🔒</span><span>This group contains sensitive security operations data. Hidden to prevent social engineering and limit knowledge of security team membership.</span></div>
+        <div class="hgd-sect">Access Rules</div>
+        <div class="access-row"><div class="ar-label">Visible in directory</div><div class="ar-val av-denied">No</div></div>
+        <div class="access-row"><div class="ar-label">Searchable by users</div><div class="ar-val av-denied">No</div></div>
+        <div class="access-row"><div class="ar-label">Members see each other</div><div class="ar-val av-allowed">Yes</div></div>
+        <div class="access-row"><div class="ar-label">Admins can view</div><div class="ar-val av-allowed">Yes</div></div>
+        <div class="access-row"><div class="ar-label">Appears in exports</div><div class="ar-val av-denied">No</div></div>
+        <div class="hgd-sect">Controls</div>
+        <div class="reason-list">
+          <div class="rl-item"><div class="rl-icon">🔔</div>Notify on membership change</div>
+          <div class="rl-item"><div class="rl-icon">📋</div>Audit all access attempts</div>
+          <div class="rl-item"><div class="rl-icon">⏱</div>Auto-review every 90 days</div>
+        </div>
+        <div class="reveal-btn">👁 Make Group Visible</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Mobile App — Wellness</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0F0F1A 0%,#1A1028 50%,#0F1A28 100%);width:1440px;height:900px;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:0;}
+
+/* Layout */
+.layout{display:flex;width:100%;height:100%;align-items:stretch;}
+
+/* Info panel */
+.info-panel{width:340px;padding:60px 48px;display:flex;flex-direction:column;justify-content:center;flex-shrink:0;}
+.project-label{font-size:11px;font-weight:700;color:#3B82F6;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;}
+.project-title{font-size:38px;font-weight:800;color:#F1F5F9;line-height:1.1;letter-spacing:-1px;margin-bottom:12px;}
+.project-title span{background:linear-gradient(90deg,#3B82F6,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.project-desc{font-size:14px;color:#64748B;line-height:1.7;margin-bottom:32px;}
+.detail-list{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.detail-item{display:flex;align-items:flex-start;gap:12px;}
+.detail-dot{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
+.detail-text{font-size:13px;color:#94A3B8;line-height:1.5;}
+.detail-text strong{color:#E2E8F0;font-weight:600;}
+.tags{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;}
+.tag-1{background:rgba(59,130,246,.15);color:#93C5FD;border:1px solid rgba(59,130,246,.2);}
+.tag-2{background:rgba(139,92,246,.15);color:#C4B5FD;border:1px solid rgba(139,92,246,.2);}
+.tag-3{background:rgba(16,185,129,.15);color:#6EE7B7;border:1px solid rgba(16,185,129,.2);}
+
+/* Phones stage */
+.phones-stage{flex:1;display:flex;align-items:center;justify-content:center;gap:24px;padding:40px 20px;position:relative;}
+.phones-stage::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%);pointer-events:none;}
+
+/* Phone device */
+.phone{width:220px;height:440px;background:#1C1C2E;border-radius:38px;border:2px solid rgba(255,255,255,.1);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.5);flex-shrink:0;position:relative;}
+.phone-notch{height:28px;background:#0F0F1A;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0;}
+.notch-pill{width:80px;height:20px;background:#0F0F1A;border-radius:0 0 16px 16px;position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:4px;}
+.notch-cam{width:8px;height:8px;border-radius:50%;background:#1A1A2E;}
+.phone-status{background:#0F0F1A;height:20px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;}
+.status-time{font-size:11px;font-weight:600;color:#F1F5F9;}
+.status-icons{display:flex;gap:3px;align-items:center;}
+.s-i{width:14px;height:8px;border-radius:1px;background:rgba(255,255,255,.4);}
+.phone-body{flex:1;overflow:hidden;}
+
+/* Screen 1: Dashboard / Home */
+.screen-home{background:linear-gradient(180deg,#0F0A1E 0%,#1A1030 100%);height:100%;display:flex;flex-direction:column;padding:16px;}
+.sh-greeting{font-size:12px;color:#64748B;margin-bottom:2px;}
+.sh-name{font-size:18px;font-weight:700;color:#F1F5F9;margin-bottom:16px;}
+.sh-score-card{background:linear-gradient(135deg,#1E1B4B,#312E81);border-radius:16px;padding:16px;margin-bottom:12px;text-align:center;}
+.sh-score{font-size:42px;font-weight:800;color:#A5B4FC;line-height:1;}
+.sh-score-label{font-size:11px;color:#818CF8;margin-top:4px;}
+.sh-row{display:flex;gap:8px;margin-bottom:12px;}
+.sh-mini-card{flex:1;background:rgba(255,255,255,.06);border-radius:12px;padding:10px;text-align:center;}
+.sh-mini-icon{font-size:18px;margin-bottom:4px;}
+.sh-mini-val{font-size:13px;font-weight:700;color:#E2E8F0;}
+.sh-mini-label{font-size:9px;color:#64748B;margin-top:2px;}
+.sh-section{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.sh-habit{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border-radius:10px;padding:9px 12px;margin-bottom:5px;}
+.sh-habit-circle{width:22px;height:22px;border-radius:50%;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-size:10px;color:#6366F1;flex-shrink:0;}
+.sh-habit-circle.done{background:#6366F1;border-color:#6366F1;color:#fff;}
+.sh-habit-text{font-size:11px;font-weight:500;color:#CBD5E1;flex:1;}
+.sh-habit-time{font-size:10px;color:#475569;}
+.sh-bottom-nav{background:#111118;padding:8px 0;display:flex;justify-content:space-around;flex-shrink:0;}
+.sh-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;border-radius:8px;}
+.sh-nav-icon{font-size:16px;}
+.sh-nav-label{font-size:9px;color:#475569;font-weight:500;}
+.sh-nav-item.active .sh-nav-label{color:#6366F1;}
+.sh-nav-dot{width:4px;height:4px;border-radius:50%;background:#6366F1;margin:0 auto;}
+
+/* Screen 2: Progress / Charts */
+.screen-progress{background:#0A0A14;height:100%;display:flex;flex-direction:column;}
+.sp-header{padding:14px 16px 10px;background:linear-gradient(180deg,#0F0A1E,transparent);}
+.sp-back{font-size:12px;color:#6366F1;margin-bottom:8px;}
+.sp-title{font-size:16px;font-weight:700;color:#F1F5F9;}
+.sp-subtitle{font-size:11px;color:#64748B;}
+.sp-tabs{display:flex;gap:4px;padding:8px 16px;background:rgba(255,255,255,.03);}
+.sp-tab{padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;color:#64748B;cursor:pointer;}
+.sp-tab.active{background:#6366F1;color:#fff;}
+.chart-area{padding:12px 16px;flex:1;}
+.chart-title{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-bottom:16px;}
+.bar{flex:1;border-radius:4px 4px 0 0;min-height:8px;}
+.bar-labels{display:flex;gap:6px;margin-top:4px;}
+.bar-label{flex:1;text-align:center;font-size:9px;color:#475569;}
+.ring-chart{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);border-radius:14px;padding:14px;}
+.ring{width:70px;height:70px;border-radius:50%;background:conic-gradient(#6366F1 0% 72%,#1E1B4B 72% 100%);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;}
+.ring::after{content:'72%';position:absolute;font-size:12px;font-weight:700;color:#A5B4FC;}
+.ring-legend{display:flex;flex-direction:column;gap:8px;}
+.rl-item{display:flex;align-items:center;gap:8px;}
+.rl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.rl-text{font-size:11px;color:#94A3B8;}
+.rl-val{font-size:11px;font-weight:600;color:#E2E8F0;margin-left:auto;}
+.streak-row{display:flex;gap:4px;padding:0 16px;margin-bottom:8px;}
+.streak-day{flex:1;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;}
+.streak-active{background:#6366F1;color:#fff;}
+.streak-inactive{background:rgba(255,255,255,.06);color:#475569;}
+.streak-today{background:#312E81;color:#A5B4FC;border:1px solid #6366F1;}
+.sp-bottom-nav{background:#111118;padding:8px 0;display:flex;justify-content:space-around;flex-shrink:0;}
+
+/* Screen 3: Mood / Wellbeing */
+.screen-mood{background:linear-gradient(180deg,#0A1628 0%,#0F1A28 100%);height:100%;display:flex;flex-direction:column;padding:14px;}
+.sm-back{font-size:12px;color:#3B82F6;margin-bottom:10px;}
+.sm-title{font-size:16px;font-weight:700;color:#F1F5F9;margin-bottom:4px;}
+.sm-date{font-size:11px;color:#64748B;margin-bottom:16px;}
+.sm-question{font-size:12px;font-weight:600;color:#CBD5E1;margin-bottom:12px;}
+.mood-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px;}
+.mood-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:10px;cursor:pointer;}
+.mood-item.selected{background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);}
+.mood-emoji{font-size:22px;}
+.mood-label{font-size:9px;color:#64748B;text-align:center;}
+.mood-item.selected .mood-label{color:#93C5FD;}
+.sm-water{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:12px;margin-bottom:12px;}
+.sm-water-title{font-size:11px;font-weight:600;color:#93C5FD;margin-bottom:8px;}
+.water-track{display:flex;gap:5px;}
+.water-cup{width:20px;height:26px;border-radius:4px;border:1.5px solid rgba(59,130,246,.4);display:flex;align-items:flex-end;overflow:hidden;}
+.water-fill{width:100%;border-radius:2px;background:#3B82F6;}
+.sm-journal-btn{background:linear-gradient(135deg,#1E3A5F,#1D4ED8);border-radius:12px;padding:14px;text-align:center;}
+.sm-jb-icon{font-size:22px;margin-bottom:4px;}
+.sm-jb-text{font-size:12px;font-weight:600;color:#BFDBFE;}
+.sm-jb-sub{font-size:10px;color:#60A5FA;margin-top:2px;}
+.sm-bottom-nav{background:#111118;padding:8px 0;display:flex;justify-content:space-around;margin:0 -14px -14px;flex-shrink:0;}
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<div class="layout">
+  <!-- Info panel -->
+  <div class="info-panel">
+    <div class="project-label">03 — Mobile App</div>
+    <div class="project-title">Bloom<br><span>Wellness</span></div>
+    <div class="project-desc">A personal wellness companion that helps users build healthier habits, track their mood, and celebrate daily progress through gentle, data-driven insights.</div>
+    <div class="detail-list">
+      <div class="detail-item">
+        <div class="detail-dot" style="background:#EEF2FF">📱</div>
+        <div class="detail-text"><strong>Platform</strong> — iOS 17, native feel with SwiftUI-inspired components</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-dot" style="background:#ECFDF5">🎯</div>
+        <div class="detail-text"><strong>Goal</strong> — Reduce habit app churn through positive reinforcement loops</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-dot" style="background:#FFF7ED">📊</div>
+        <div class="detail-text"><strong>Outcome</strong> — 68% D30 retention in usability testing</div>
+      </div>
+    </div>
+    <div class="tags">
+      <div class="tag tag-1">Habit Tracking</div>
+      <div class="tag tag-2">Mood Journal</div>
+      <div class="tag tag-3">Data Viz</div>
+    </div>
+  </div>
+
+  <!-- Phones -->
+  <div class="phones-stage">
+    <!-- Phone 1: Home Screen -->
+    <div class="phone" style="transform:rotate(-5deg) translateY(20px);z-index:1;">
+      <div class="phone-notch"><div class="notch-pill"><div class="notch-cam"></div></div></div>
+      <div class="phone-status">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-i" style="width:10px;border-radius:50%;background:rgba(255,255,255,.6)"></div>
+          <div style="width:18px;height:8px;border:1.5px solid rgba(255,255,255,.4);border-radius:2px;display:flex;align-items:center;padding:1px"><div style="width:60%;height:100%;background:rgba(255,255,255,.6);border-radius:1px"></div></div>
+        </div>
+      </div>
+      <div class="phone-body">
+        <div class="screen-home">
+          <div class="sh-greeting">Good morning,</div>
+          <div class="sh-name">Aino 👋</div>
+          <div class="sh-score-card">
+            <div class="sh-score">87</div>
+            <div class="sh-score-label">Wellness Score · Today</div>
+          </div>
+          <div class="sh-row">
+            <div class="sh-mini-card"><div class="sh-mini-icon">🏃</div><div class="sh-mini-val">7,240</div><div class="sh-mini-label">Steps</div></div>
+            <div class="sh-mini-card"><div class="sh-mini-icon">💧</div><div class="sh-mini-val">1.8L</div><div class="sh-mini-label">Water</div></div>
+            <div class="sh-mini-card"><div class="sh-mini-icon">😴</div><div class="sh-mini-val">7h 20m</div><div class="sh-mini-label">Sleep</div></div>
+          </div>
+          <div class="sh-section">Today's Habits</div>
+          <div class="sh-habit"><div class="sh-habit-circle done">✓</div><div class="sh-habit-text">Morning meditation</div><div class="sh-habit-time">7:00</div></div>
+          <div class="sh-habit"><div class="sh-habit-circle done">✓</div><div class="sh-habit-text">30-min walk</div><div class="sh-habit-time">8:15</div></div>
+          <div class="sh-habit"><div class="sh-habit-circle">3</div><div class="sh-habit-text">Read 20 pages</div><div class="sh-habit-time">Evening</div></div>
+          <div class="sh-habit"><div class="sh-habit-circle">4</div><div class="sh-habit-text">Journaling</div><div class="sh-habit-time">Night</div></div>
+        </div>
+      </div>
+      <div class="sh-bottom-nav">
+        <div class="sh-nav-item active"><div class="sh-nav-icon">🏠</div><div class="sh-nav-label">Home</div><div class="sh-nav-dot"></div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">📊</div><div class="sh-nav-label">Progress</div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">✍️</div><div class="sh-nav-label">Journal</div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">👤</div><div class="sh-nav-label">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- Phone 2: Progress Screen (center, highlighted) -->
+    <div class="phone" style="transform:scale(1.06);z-index:3;box-shadow:0 40px 100px rgba(99,102,241,.3),0 0 0 1px rgba(99,102,241,.2);">
+      <div class="phone-notch"><div class="notch-pill"><div class="notch-cam"></div></div></div>
+      <div class="phone-status">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div style="width:18px;height:8px;border:1.5px solid rgba(255,255,255,.4);border-radius:2px;display:flex;align-items:center;padding:1px"><div style="width:70%;height:100%;background:rgba(255,255,255,.6);border-radius:1px"></div></div>
+        </div>
+      </div>
+      <div class="phone-body">
+        <div class="screen-progress">
+          <div class="sp-header">
+            <div class="sp-back">← Back</div>
+            <div class="sp-title">My Progress</div>
+            <div class="sp-subtitle">March 2026 · Week 3</div>
+          </div>
+          <div class="sp-tabs">
+            <div class="sp-tab active">Week</div>
+            <div class="sp-tab">Month</div>
+            <div class="sp-tab">Year</div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-title">Daily Wellness Score</div>
+            <div class="bar-chart">
+              <div class="bar" style="height:55%;background:rgba(99,102,241,.5);"></div>
+              <div class="bar" style="height:72%;background:rgba(99,102,241,.6);"></div>
+              <div class="bar" style="height:60%;background:rgba(99,102,241,.5);"></div>
+              <div class="bar" style="height:85%;background:rgba(99,102,241,.7);"></div>
+              <div class="bar" style="height:78%;background:rgba(99,102,241,.6);"></div>
+              <div class="bar" style="height:90%;background:#6366F1;"></div>
+              <div class="bar" style="height:42%;background:rgba(99,102,241,.3);border:1px dashed rgba(99,102,241,.4);"></div>
+            </div>
+            <div class="bar-labels">
+              <div class="bar-label">Mon</div><div class="bar-label">Tue</div><div class="bar-label">Wed</div><div class="bar-label">Thu</div><div class="bar-label">Fri</div><div class="bar-label">Sat</div><div class="bar-label">Sun</div>
+            </div>
+            <div class="chart-title" style="margin-top:14px">Habits Overview</div>
+            <div class="ring-chart">
+              <div class="ring"></div>
+              <div class="ring-legend">
+                <div class="rl-item"><div class="rl-dot" style="background:#6366F1"></div><div class="rl-text">Completed</div><div class="rl-val">36</div></div>
+                <div class="rl-item"><div class="rl-dot" style="background:#1E1B4B"></div><div class="rl-text">Missed</div><div class="rl-val">14</div></div>
+              </div>
+            </div>
+            <div class="chart-title" style="margin-top:14px">Streak</div>
+            <div class="streak-row">
+              <div class="streak-day streak-active">M</div>
+              <div class="streak-day streak-active">T</div>
+              <div class="streak-day streak-inactive">W</div>
+              <div class="streak-day streak-active">T</div>
+              <div class="streak-day streak-active">F</div>
+              <div class="streak-day streak-today">S</div>
+              <div class="streak-day streak-inactive">S</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sp-bottom-nav">
+        <div class="sh-nav-item"><div class="sh-nav-icon">🏠</div><div class="sh-nav-label" style="color:#475569">Home</div></div>
+        <div class="sh-nav-item active"><div class="sh-nav-icon">📊</div><div class="sh-nav-label">Progress</div><div class="sh-nav-dot"></div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">✍️</div><div class="sh-nav-label" style="color:#475569">Journal</div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">👤</div><div class="sh-nav-label" style="color:#475569">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- Phone 3: Mood check-in -->
+    <div class="phone" style="transform:rotate(5deg) translateY(20px);z-index:1;">
+      <div class="phone-notch"><div class="notch-pill"><div class="notch-cam"></div></div></div>
+      <div class="phone-status">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div style="width:18px;height:8px;border:1.5px solid rgba(255,255,255,.4);border-radius:2px;display:flex;align-items:center;padding:1px"><div style="width:50%;height:100%;background:rgba(255,255,255,.6);border-radius:1px"></div></div>
+        </div>
+      </div>
+      <div class="phone-body">
+        <div class="screen-mood">
+          <div class="sm-back">← Home</div>
+          <div class="sm-title">Daily Check-in</div>
+          <div class="sm-date">Monday, 23 March</div>
+          <div class="sm-question">How are you feeling today?</div>
+          <div class="mood-grid">
+            <div class="mood-item"><div class="mood-emoji">😔</div><div class="mood-label">Low</div></div>
+            <div class="mood-item"><div class="mood-emoji">😐</div><div class="mood-label">Meh</div></div>
+            <div class="mood-item selected"><div class="mood-emoji">🙂</div><div class="mood-label">Okay</div></div>
+            <div class="mood-item"><div class="mood-emoji">😊</div><div class="mood-label">Good</div></div>
+            <div class="mood-item"><div class="mood-emoji">😄</div><div class="mood-label">Great</div></div>
+          </div>
+          <div class="sm-water">
+            <div class="sm-water-title">💧 Water intake — 6 / 8 cups</div>
+            <div class="water-track">
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:100%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:30%"></div></div>
+              <div class="water-cup"><div class="water-fill" style="height:0%"></div></div>
+            </div>
+          </div>
+          <div class="sm-journal-btn">
+            <div class="sm-jb-icon">✍️</div>
+            <div class="sm-jb-text">Write in Journal</div>
+            <div class="sm-jb-sub">Tap to reflect on your day</div>
+          </div>
+        </div>
+      </div>
+      <div class="sm-bottom-nav">
+        <div class="sh-nav-item"><div class="sh-nav-icon">🏠</div><div class="sh-nav-label" style="color:#475569">Home</div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">📊</div><div class="sh-nav-label" style="color:#475569">Progress</div></div>
+        <div class="sh-nav-item active"><div class="sh-nav-icon">✍️</div><div class="sh-nav-label">Journal</div><div class="sh-nav-dot"></div></div>
+        <div class="sh-nav-item"><div class="sh-nav-icon">👤</div><div class="sh-nav-label" style="color:#475569">Profile</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

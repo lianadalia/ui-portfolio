@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Group Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;width:1440px;height:900px;overflow:hidden;display:flex;}
+
+.sidebar{width:240px;background:#1E1B4B;display:flex;flex-direction:column;flex-shrink:0;}
+.s-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08);}
+.s-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
+.s-logo-text{font-size:13.5px;font-weight:700;color:#E2E8F0;}
+.s-section{padding:18px 12px 4px;font-size:9.5px;font-weight:700;color:#6366F1;letter-spacing:.1em;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:7px;margin:0 8px 1px;cursor:pointer;font-size:13px;font-weight:500;color:#94A3B8;}
+.s-item.active{background:rgba(99,102,241,.2);color:#A5B4FC;}
+.s-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(99,102,241,.35);color:#A5B4FC;}
+.s-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);}
+.s-user{display:flex;align-items:center;gap:9px;}
+.s-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#A78BFA);font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
+.s-uname{font-size:12px;font-weight:600;color:#E2E8F0;}
+.s-urole{font-size:11px;color:#64748B;}
+
+/* Dimmed background (modal overlay) */
+.bg-dimmed{flex:1;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;position:relative;}
+
+/* Background content (blurred) */
+.bg-content{position:absolute;inset:0;display:flex;flex-direction:column;filter:blur(2px);pointer-events:none;overflow:hidden;}
+.bg-topbar{background:#fff;height:56px;border-bottom:1px solid #E2E8F0;}
+.bg-body{flex:1;padding:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-content:start;}
+.bg-card{background:#fff;border-radius:10px;border:1px solid #E2E8F0;height:80px;}
+
+/* Modal */
+.modal{background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.25);width:640px;max-height:820px;overflow-y:auto;position:relative;z-index:10;}
+.modal-header{padding:22px 24px 18px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.mh-left{display:flex;align-items:center;gap:12px;}
+.mh-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#EEF2FF,#E0E7FF);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.mh-title{font-size:16px;font-weight:700;color:#0F172A;}
+.mh-sub{font-size:12px;color:#94A3B8;margin-top:1px;}
+.modal-close{width:30px;height:30px;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:16px;color:#64748B;cursor:pointer;}
+
+/* Steps indicator */
+.steps{display:flex;align-items:center;padding:16px 24px;border-bottom:1px solid #F8FAFC;gap:0;}
+.step{display:flex;align-items:center;gap:8px;flex:1;}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.step-active .step-num{background:#6366F1;color:#fff;}
+.step-done .step-num{background:#10B981;color:#fff;}
+.step-inactive .step-num{background:#F1F5F9;color:#94A3B8;}
+.step-label{font-size:12px;font-weight:600;}
+.step-active .step-label{color:#0F172A;}
+.step-done .step-label{color:#10B981;}
+.step-inactive .step-label{color:#94A3B8;}
+.step-line{flex:1;height:2px;background:#E2E8F0;margin:0 8px;}
+.step-line.done{background:#10B981;}
+
+/* Form */
+.modal-body{padding:20px 24px;}
+.form-group{margin-bottom:18px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;}
+.label-optional{font-size:11px;font-weight:400;color:#94A3B8;margin-left:4px;}
+input[type=text],textarea,select{width:100%;padding:9px 12px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;color:#0F172A;font-family:'Inter',sans-serif;background:#fff;outline:none;}
+input[type=text]:focus,textarea:focus,select:focus{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.12);}
+input.filled{border-color:#6366F1;background:#FAFBFF;}
+textarea{min-height:72px;resize:none;line-height:1.5;}
+.input-hint{font-size:11px;color:#94A3B8;margin-top:4px;}
+.input-error{font-size:11px;color:#EF4444;margin-top:4px;}
+
+/* Icon picker */
+.icon-picker{display:flex;gap:6px;flex-wrap:wrap;}
+.icon-opt{width:36px;height:36px;border-radius:8px;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+.icon-opt.selected{border-color:#6366F1;background:#EEF2FF;}
+
+/* Color picker */
+.color-picker{display:flex;gap:6px;}
+.color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;}
+.color-opt.selected{border-color:#0F172A;box-shadow:0 0 0 2px #fff,0 0 0 4px #6366F1;}
+
+/* Parent group select */
+.parent-select-wrap{position:relative;}
+.ps-display{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px solid #6366F1;border-radius:8px;cursor:pointer;background:#FAFBFF;box-shadow:0 0 0 3px rgba(99,102,241,.12);}
+.ps-icon{font-size:14px;}
+.ps-text{font-size:13px;color:#0F172A;font-weight:500;flex:1;}
+.ps-caret{color:#64748B;font-size:12px;}
+.ps-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:20;overflow:hidden;}
+.psd-item{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;font-size:13px;}
+.psd-item:hover{background:#F8FAFC;}
+.psd-item.active{background:#EEF2FF;color:#4F46E5;}
+.psd-indent{padding-left:30px;}
+.psd-indent2{padding-left:46px;}
+
+/* Visibility options */
+.visibility-opts{display:flex;flex-direction:column;gap:8px;}
+.vis-opt{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;border:2px solid #E2E8F0;cursor:pointer;}
+.vis-opt.selected{border-color:#6366F1;background:#FAFBFF;}
+.vis-radio{width:18px;height:18px;border-radius:50%;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;margin-top:1px;flex-shrink:0;}
+.vis-opt.selected .vis-radio{border-color:#6366F1;background:#6366F1;}
+.vis-radio-dot{width:8px;height:8px;border-radius:50%;background:#fff;}
+.vis-icon{font-size:18px;flex-shrink:0;}
+.vis-title{font-size:13px;font-weight:600;color:#0F172A;}
+.vis-desc{font-size:11.5px;color:#64748B;margin-top:2px;}
+
+/* Footer */
+.modal-footer{padding:16px 24px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:0;background:#fff;}
+.mf-back{padding:9px 18px;border-radius:8px;background:#F1F5F9;color:#475569;font-size:13px;font-weight:600;cursor:pointer;}
+.mf-right{display:flex;gap:8px;}
+.mf-cancel{padding:9px 18px;border-radius:8px;background:#F8FAFC;color:#64748B;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #E2E8F0;}
+.mf-next{padding:9px 22px;border-radius:8px;background:#6366F1;color:#fff;font-size:13px;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="s-logo"><div class="s-logo-mark">A</div><div class="s-logo-text">AdminPanel</div></div>
+  <div class="s-section">People</div>
+  <div class="s-item"><span>👥</span> Users</div>
+  <div class="s-item"><span>✏️</span> Editors</div>
+  <div class="s-item active"><span>🗂</span> Groups <div class="s-badge">12</div></div>
+  <div class="s-item"><span>🔐</span> Roles & Permissions</div>
+  <div class="s-section">Settings</div>
+  <div class="s-item"><span>📊</span> Audit Log</div>
+  <div class="s-item"><span>⚙️</span> Configuration</div>
+  <div class="s-footer"><div class="s-user"><div class="s-ava">LL</div><div><div class="s-uname">Liana Linvik</div><div class="s-urole">Super Admin</div></div></div></div>
+</div>
+
+<div class="bg-dimmed">
+  <div class="bg-content">
+    <div class="bg-topbar"></div>
+    <div class="bg-body">
+      <div class="bg-card"></div><div class="bg-card"></div><div class="bg-card"></div>
+      <div class="bg-card"></div><div class="bg-card"></div><div class="bg-card"></div>
+    </div>
+  </div>
+
+  <div class="modal">
+    <div class="modal-header">
+      <div class="mh-left">
+        <div class="mh-icon">🗂</div>
+        <div>
+          <div class="mh-title">Create New Group</div>
+          <div class="mh-sub">Organise users into teams and assign permissions</div>
+        </div>
+      </div>
+      <div class="modal-close">✕</div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step step-done"><div class="step-num">✓</div><div class="step-label">Basics</div></div>
+      <div class="step-line done"></div>
+      <div class="step step-active"><div class="step-num">2</div><div class="step-label">Settings</div></div>
+      <div class="step-line"></div>
+      <div class="step step-inactive"><div class="step-num">3</div><div class="step-label">Members</div></div>
+      <div class="step-line"></div>
+      <div class="step step-inactive"><div class="step-num">4</div><div class="step-label">Permissions</div></div>
+    </div>
+
+    <div class="modal-body">
+      <!-- Row 1: Name + handle -->
+      <div class="form-row">
+        <div>
+          <label>Group Name</label>
+          <input type="text" class="filled" value="Frontend Guild">
+          <div class="input-hint">Visible to all members who can see this group</div>
+        </div>
+        <div>
+          <label>Handle / Slug</label>
+          <input type="text" class="filled" value="frontend-guild">
+          <div class="input-hint">Used in @mentions and API calls</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description <span class="label-optional">Optional</span></label>
+        <textarea>All frontend engineers across web and mobile platforms. Meets every Tuesday for guild sync.</textarea>
+      </div>
+
+      <!-- Icon + Color row -->
+      <div class="form-row">
+        <div>
+          <label>Group Icon</label>
+          <div class="icon-picker">
+            <div class="icon-opt">👥</div>
+            <div class="icon-opt selected">💻</div>
+            <div class="icon-opt">🎨</div>
+            <div class="icon-opt">⚡</div>
+            <div class="icon-opt">🔧</div>
+            <div class="icon-opt">🚀</div>
+            <div class="icon-opt">📦</div>
+            <div class="icon-opt">🌐</div>
+          </div>
+        </div>
+        <div>
+          <label>Group Colour</label>
+          <div class="color-picker">
+            <div class="color-opt selected" style="background:#6366F1"></div>
+            <div class="color-opt" style="background:#10B981"></div>
+            <div class="color-opt" style="background:#F59E0B"></div>
+            <div class="color-opt" style="background:#EF4444"></div>
+            <div class="color-opt" style="background:#3B82F6"></div>
+            <div class="color-opt" style="background:#8B5CF6"></div>
+            <div class="color-opt" style="background:#EC4899"></div>
+            <div class="color-opt" style="background:#0D9488"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parent group -->
+      <div class="form-group">
+        <label>Parent Group</label>
+        <div class="parent-select-wrap">
+          <div class="ps-display">
+            <div class="ps-icon">💻</div>
+            <div class="ps-text">Engineering</div>
+            <div class="ps-caret">▾</div>
+          </div>
+          <div class="ps-dropdown">
+            <div class="psd-item"><span>🏢</span> Organisation (root)</div>
+            <div class="psd-item psd-indent"><span>💻</span> Engineering</div>
+            <div class="psd-item psd-indent2 active"><span>🌐</span> Frontend <span style="margin-left:auto;font-size:11px;color:#94A3B8">← current parent</span></div>
+            <div class="psd-item psd-indent2"><span>🔧</span> Backend</div>
+            <div class="psd-item psd-indent"><span>📦</span> Product</div>
+            <div class="psd-item psd-indent"><span>🎨</span> Design</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visibility -->
+      <div class="form-group">
+        <label>Visibility</label>
+        <div class="visibility-opts">
+          <div class="vis-opt selected">
+            <div class="vis-radio"><div class="vis-radio-dot"></div></div>
+            <div class="vis-icon">🌐</div>
+            <div><div class="vis-title">Visible</div><div class="vis-desc">All users in the organisation can find and see this group</div></div>
+          </div>
+          <div class="vis-opt">
+            <div class="vis-radio"></div>
+            <div class="vis-icon">⚠️</div>
+            <div><div class="vis-title">Restricted</div><div class="vis-desc">Only admins and group members can see this group</div></div>
+          </div>
+          <div class="vis-opt">
+            <div class="vis-radio"></div>
+            <div class="vis-icon">🔒</div>
+            <div><div class="vis-title">Hidden</div><div class="vis-desc">Invisible to non-admin users; does not appear in directory or search</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="mf-back">← Back</div>
+      <div class="mf-right">
+        <div class="mf-cancel">Cancel</div>
+        <div class="mf-next">Next: Members →</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
