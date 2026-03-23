@@ -176,6 +176,8 @@
     <option value="1">Flow 2 — Admin: Create a Group</option>
     <option value="2">Flow 3 — Reveal Hidden Group</option>
     <option value="3">Flow 4 — Editor: Check Permissions</option>
+    <option value="4">Flow 5 — Browse Profile</option>
+    <option value="5">Flow 6 — Self-Reflection Journal</option>
   </select>
 
   <div class="divider"></div>
@@ -333,6 +335,93 @@ const flows = [
         label: "Editors View — Detail Panel Open",
         hotspots: [
           { x:15, y:8, w:18, h:5, label:"← Back to cover", next:0 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Flow 5 — Browse Profile",
+    steps: [
+      {
+        screen: "cover.html",
+        label: "Portfolio Cover",
+        hotspots: [
+          { x:53, y:20, w:35, h:20, label:"→ Open Profile", next:1 }
+        ]
+      },
+      {
+        screen: "profile.html",
+        label: "Profile — Overview",
+        hotspots: [
+          { x:15, y:32, w:70, h:10, label:"→ View Skills & Expertise", next:2 },
+          { x:15, y:55, w:70, h:8,  label:"→ View Activity Feed", next:3 }
+        ]
+      },
+      {
+        screen: "profile.html",
+        label: "Profile — Skills",
+        hotspots: [
+          { x:15, y:55, w:70, h:8,  label:"→ View Activity Feed", next:3 },
+          { x:15, y:8,  w:15, h:5,  label:"← Back to Cover", next:0 }
+        ]
+      },
+      {
+        screen: "profile.html",
+        label: "Profile — Activity Feed",
+        hotspots: [
+          { x:15, y:8,  w:15, h:5,  label:"← Back to Cover", next:0 },
+          { x:55, y:8,  w:25, h:5,  label:"→ Go to Self-Reflection", next:4 }
+        ]
+      },
+      {
+        screen: "self-reflection.html",
+        label: "Self-Reflection Journal",
+        hotspots: [
+          { x:15, y:8,  w:15, h:5,  label:"← Back to Profile", next:3 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Flow 6 — Self-Reflection Journal",
+    steps: [
+      {
+        screen: "cover.html",
+        label: "Portfolio Cover",
+        hotspots: [
+          { x:53, y:40, w:35, h:20, label:"→ Open Self-Reflection", next:1 }
+        ]
+      },
+      {
+        screen: "self-reflection.html",
+        label: "Self-Reflection — Entry List",
+        hotspots: [
+          { x:17, y:30, w:18, h:8,  label:"→ Open past entry", next:2 },
+          { x:17, y:38, w:18, h:8,  label:"→ Open past entry", next:2 },
+          { x:17, y:46, w:18, h:8,  label:"→ Open past entry", next:2 }
+        ]
+      },
+      {
+        screen: "self-reflection.html",
+        label: "Self-Reflection — Writing Mode",
+        hotspots: [
+          { x:72, y:72, w:22, h:8,  label:"→ View Mood Insights", next:3 },
+          { x:17, y:8,  w:15, h:5,  label:"← Back to Cover", next:0 }
+        ]
+      },
+      {
+        screen: "self-reflection.html",
+        label: "Self-Reflection — Insights Panel",
+        hotspots: [
+          { x:17, y:8,  w:15, h:5,  label:"← Back to Cover", next:0 },
+          { x:55, y:8,  w:20, h:5,  label:"→ Go to Profile", next:4 }
+        ]
+      },
+      {
+        screen: "profile.html",
+        label: "Profile",
+        hotspots: [
+          { x:15, y:8,  w:15, h:5,  label:"← Back to Self-Reflection", next:3 }
         ]
       }
     ]
