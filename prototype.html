@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Prototype — UI Portfolio</title>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #080b12;
+    color: #e2e8f0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top bar ── */
+  #topbar {
+    height: 48px;
+    background: #0f1117;
+    border-bottom: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  #topbar .logo {
+    font-size: 13px; font-weight: 700; color: #6366f1; letter-spacing: .3px;
+    margin-right: 8px;
+  }
+  #topbar .divider { width: 1px; height: 24px; background: #1e293b; }
+
+  /* Flow selector */
+  #flow-select {
+    background: #1e293b; border: 1px solid #334155; border-radius: 6px;
+    color: #e2e8f0; font-size: 12px; padding: 5px 10px; cursor: pointer;
+    outline: none;
+  }
+  #flow-select:focus { border-color: #6366f1; }
+
+  /* Screen breadcrumb */
+  #breadcrumb {
+    font-size: 12px; color: #64748b; display: flex; align-items: center; gap: 6px;
+    flex: 1;
+  }
+  #breadcrumb .step { color: #94a3b8; }
+  #breadcrumb .sep { color: #334155; }
+  #breadcrumb .current { color: #a5b4fc; font-weight: 600; }
+
+  /* Nav buttons */
+  .nav-btn {
+    background: #1e293b; border: 1px solid #334155; border-radius: 6px;
+    color: #94a3b8; font-size: 12px; padding: 5px 14px; cursor: pointer;
+    transition: all .15s;
+  }
+  .nav-btn:hover { background: #334155; color: #e2e8f0; }
+  .nav-btn:disabled { opacity: .3; cursor: default; }
+  .nav-btn.restart { border-color: #6366f1; color: #a5b4fc; }
+  .nav-btn.restart:hover { background: #6366f1; color: #fff; }
+
+  #screen-counter { font-size: 11px; color: #475569; white-space: nowrap; }
+
+  /* Hotspot hint */
+  #hint {
+    font-size: 11px; color: #f59e0b; display: flex; align-items: center; gap: 5px;
+    margin-left: auto;
+  }
+  #hint .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── Viewport ── */
+  #viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Screen frame */
+  #screen-wrap {
+    position: relative;
+    box-shadow: 0 0 0 1px #1e293b, 0 32px 80px rgba(0,0,0,.7);
+    border-radius: 4px;
+    overflow: hidden;
+    transform-origin: top center;
+  }
+
+  #screen-frame {
+    display: block;
+    border: none;
+    background: #fff;
+  }
+
+  /* Hotspot overlays */
+  .hotspot {
+    position: absolute;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background .15s, box-shadow .15s;
+    z-index: 50;
+  }
+  .hotspot:hover {
+    background: rgba(99,102,241,.18) !important;
+    box-shadow: inset 0 0 0 2px rgba(99,102,241,.6);
+  }
+  .hotspot .tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    border: 1px solid #6366f1;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 11px;
+    color: #a5b4fc;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .15s;
+    z-index: 100;
+  }
+  .hotspot:hover .tooltip { opacity: 1; }
+
+  /* Transition overlay */
+  #transition {
+    position: absolute;
+    inset: 0;
+    background: #080b12;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s;
+    z-index: 200;
+  }
+  #transition.flash { opacity: .6; }
+
+  /* ── Bottom status bar ── */
+  #statusbar {
+    height: 32px;
+    background: #0f1117;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+    flex-shrink: 0;
+    font-size: 11px; color: #475569;
+  }
+  #statusbar .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 4px; }
+  #statusbar .flow-tag {
+    background: #1e293b; border: 1px solid #334155; border-radius: 4px;
+    padding: 1px 8px; font-size: 10px; color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div id="topbar">
+  <span class="logo">▶ Prototype</span>
+  <div class="divider"></div>
+
+  <select id="flow-select" onchange="loadFlow(this.value)">
+    <option value="0">Flow 1 — Admin: Manage a User</option>
+    <option value="1">Flow 2 — Admin: Create a Group</option>
+    <option value="2">Flow 3 — Reveal Hidden Group</option>
+    <option value="3">Flow 4 — Editor: Check Permissions</option>
+  </select>
+
+  <div class="divider"></div>
+
+  <div id="breadcrumb"></div>
+
+  <div id="hint"><div class="dot"></div> Click highlighted areas to continue</div>
+
+  <div class="divider"></div>
+
+  <span id="screen-counter"></span>
+  <button class="nav-btn" id="btn-back" onclick="goBack()">← Back</button>
+  <button class="nav-btn" id="btn-fwd" onclick="goForward()">Forward →</button>
+  <button class="nav-btn restart" onclick="restart()">↺ Restart</button>
+</div>
+
+<!-- Main viewport -->
+<div id="viewport">
+  <div id="screen-wrap">
+    <iframe id="screen-frame" scrolling="no"></iframe>
+    <!-- hotspots injected here by JS -->
+  </div>
+  <div id="transition"></div>
+</div>
+
+<!-- Status bar -->
+<div id="statusbar">
+  <span><span class="dot"></span>Running on localhost:8765</span>
+  <span id="status-flow" class="flow-tag">Flow 1</span>
+  <span id="status-screen"></span>
+</div>
+
+<script>
+// ── Flow definitions ──────────────────────────────────────────────
+// hotspots: { x, y, w, h } are % of the iframe content (1440px wide screens)
+// label: tooltip text
+// next: index of next step in this flow
+
+const SCREEN_W = 1440;
+const SCREEN_H = 900;
+
+const flows = [
+  {
+    name: "Flow 1 — Admin: Manage a User",
+    steps: [
+      {
+        screen: "cover.html",
+        label: "Portfolio Cover",
+        hotspots: [
+          { x:17, y:20, w:35, h:20, label:"→ Open User & Group Management", next:1 }
+        ]
+      },
+      {
+        screen: "user-management2.html",
+        label: "User Management",
+        hotspots: [
+          { x:15, y:43, w:75, h:7,  label:"→ Open User: Liana Linvik", next:2 },
+          { x:15, y:50, w:75, h:7,  label:"→ Open User: Aino Virtanen", next:2 },
+          { x:15, y:57, w:75, h:7,  label:"→ Open User: Janne Korhonen", next:2 },
+        ]
+      },
+      {
+        screen: "user-inspection.html",
+        label: "User Inspection — Aino Virtanen",
+        hotspots: [
+          { x:15, y:8, w:20, h:5, label:"← Back to User Management", next:1 },
+          { x:50, y:8, w:14, h:5, label:"✏️ Edit User", next:2 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Flow 2 — Admin: Create a Group",
+    steps: [
+      {
+        screen: "cover.html",
+        label: "Portfolio Cover",
+        hotspots: [
+          { x:17, y:20, w:35, h:20, label:"→ Open User & Group Management", next:1 }
+        ]
+      },
+      {
+        screen: "group-inspection.html",
+        label: "Group Inspection — Frontend Guild",
+        hotspots: [
+          { x:70, y:8,  w:12, h:5, label:"+ Add Members", next:2 },
+          { x:55, y:8,  w:13, h:5, label:"✏️ Edit Group", next:2 }
+        ]
+      },
+      {
+        screen: "group-creation.html",
+        label: "Group Creation — Step 2: Settings",
+        hotspots: [
+          { x:62, y:87, w:22, h:7, label:"Next: Members →", next:3 },
+          { x:3,  y:87, w:12, h:7, label:"← Back", next:1 }
+        ]
+      },
+      {
+        screen: "group-inspection.html",
+        label: "Group Inspection — New Group Created",
+        hotspots: [
+          { x:15, y:8, w:18, h:5, label:"← Back to Groups", next:1 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Flow 3 — Reveal Hidden Group",
+    steps: [
+      {
+        screen: "hidden-groups.html",
+        label: "Hidden Groups",
+        hotspots: [
+          { x:55, y:35, w:20, h:8, label:"→ Select Security Ops", next:1 },
+          { x:55, y:43, w:20, h:8, label:"→ Select On-call Rota", next:1 }
+        ]
+      },
+      {
+        screen: "hidden-groups.html",
+        label: "Hidden Groups — Detail Panel",
+        hotspots: [
+          { x:72, y:85, w:22, h:8, label:"👁 Make Group Visible", next:2 }
+        ]
+      },
+      {
+        screen: "group-inspection.html",
+        label: "Group now visible — Inspection View",
+        hotspots: [
+          { x:15, y:8, w:18, h:5, label:"← Back to Hidden Groups", next:0 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Flow 4 — Editor: Check Permissions",
+    steps: [
+      {
+        screen: "cover.html",
+        label: "Portfolio Cover",
+        hotspots: [
+          { x:17, y:20, w:35, h:20, label:"→ Open Editors View", next:1 }
+        ]
+      },
+      {
+        screen: "editors-view.html",
+        label: "Editors View",
+        hotspots: [
+          { x:17, y:23, w:38, h:12, label:"→ Aino Virtanen — view detail", next:2 },
+          { x:17, y:35, w:38, h:12, label:"→ Janne Korhonen — view detail", next:2 },
+          { x:17, y:47, w:38, h:12, label:"→ Miika Leppänen — view detail", next:2 }
+        ]
+      },
+      {
+        screen: "editors-view.html",
+        label: "Editors View — Detail Panel Open",
+        hotspots: [
+          { x:15, y:8, w:18, h:5, label:"← Back to cover", next:0 }
+        ]
+      }
+    ]
+  }
+];
+
+// ── State ─────────────────────────────────────────────────────────
+let currentFlow = 0;
+let currentStep = 0;
+let history = [];
+
+// ── Scale ─────────────────────────────────────────────────────────
+function computeScale() {
+  const vp = document.getElementById('viewport');
+  const availW = vp.clientWidth  - 40;
+  const availH = vp.clientHeight - 40;
+  const scaleW = availW / SCREEN_W;
+  const scaleH = availH / SCREEN_H;
+  return Math.min(scaleW, scaleH, 1);
+}
+
+function applyScale() {
+  const scale = computeScale();
+  const wrap  = document.getElementById('screen-wrap');
+  const frame = document.getElementById('screen-frame');
+  frame.width  = SCREEN_W;
+  frame.height = SCREEN_H;
+  wrap.style.width  = SCREEN_W + 'px';
+  wrap.style.height = SCREEN_H + 'px';
+  wrap.style.transform = `scale(${scale})`;
+
+  // Reposition hotspots (they use % of frame, already absolute in wrap coords)
+  // Nothing extra needed — hotspots are children of wrap
+}
+
+// ── Render step ───────────────────────────────────────────────────
+function renderStep(flowIdx, stepIdx) {
+  const flow = flows[flowIdx];
+  const step = flow.steps[stepIdx];
+  const wrap = document.getElementById('screen-wrap');
+
+  // Remove old hotspots
+  wrap.querySelectorAll('.hotspot').forEach(h => h.remove());
+
+  // Load screen
+  const frame = document.getElementById('screen-frame');
+  frame.src = step.screen;
+
+  // Add hotspots
+  step.hotspots.forEach(hs => {
+    const el = document.createElement('div');
+    el.className = 'hotspot';
+    el.style.left   = hs.x + '%';
+    el.style.top    = hs.y + '%';
+    el.style.width  = hs.w + '%';
+    el.style.height = hs.h + '%';
+    el.style.background = 'rgba(99,102,241,0.06)';
+    const tip = document.createElement('div');
+    tip.className = 'tooltip';
+    tip.textContent = hs.label;
+    el.appendChild(tip);
+
+    el.addEventListener('click', () => {
+      history.push({ flow: flowIdx, step: stepIdx });
+      navigate(flowIdx, hs.next);
+    });
+    wrap.appendChild(el);
+  });
+
+  // Update UI
+  updateBreadcrumb(flow, stepIdx);
+  document.getElementById('screen-counter').textContent =
+    `Screen ${stepIdx + 1} / ${flow.steps.length}`;
+  document.getElementById('status-flow').textContent = `Flow ${flowIdx + 1}`;
+  document.getElementById('status-screen').textContent = step.label;
+  document.getElementById('btn-back').disabled  = history.length === 0;
+  document.getElementById('btn-fwd').disabled   = true;
+}
+
+function updateBreadcrumb(flow, stepIdx) {
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = flow.steps.map((s, i) => {
+    if (i < stepIdx)  return `<span class="step">${s.label}</span><span class="sep">›</span>`;
+    if (i === stepIdx) return `<span class="current">${s.label}</span>`;
+    return '';
+  }).join('');
+}
+
+function navigate(flowIdx, stepIdx) {
+  const tr = document.getElementById('transition');
+  tr.classList.add('flash');
+  setTimeout(() => {
+    currentFlow = flowIdx;
+    currentStep = stepIdx;
+    renderStep(flowIdx, stepIdx);
+    applyScale();
+    setTimeout(() => tr.classList.remove('flash'), 150);
+  }, 150);
+}
+
+function loadFlow(idx) {
+  currentFlow = parseInt(idx);
+  currentStep = 0;
+  history = [];
+  navigate(currentFlow, 0);
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  const prev = history.pop();
+  currentFlow = prev.flow;
+  currentStep = prev.step;
+  renderStep(prev.flow, prev.step);
+  applyScale();
+}
+
+function goForward() {}
+
+function restart() {
+  history = [];
+  currentStep = 0;
+  navigate(currentFlow, 0);
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  applyScale();
+  loadFlow(0);
+});
+window.addEventListener('resize', applyScale);
+</script>
+</body>
+</html>
