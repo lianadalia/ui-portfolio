@@ -117,13 +117,19 @@ UX documentation is captured in the same Figma file:
 
 ![Site Map](docs/sitemap.png)
 
+The full information architecture of the portfolio. The root node is the Portfolio Cover, which branches into 6 sections. User & Group Management is the deepest section with 6 sub-screens; the remaining sections (Browser, Mobile App, Test Dashboard, Profile, Self-Reflection) each have 3–4 content areas. Colour coding matches the accent colours used across the portfolio.
+
 ### User Flow
 
 ![User Flow](docs/user-flow.png)
 
+Four key task flows mapped from start to completion. Flow 1 shows an admin locating a user and choosing between three actions (edit role, suspend, add to group) at a decision point. Flow 2 walks through the 4-step group creation wizard. Flow 3 covers the hidden group reveal path including a confirmation dialog with Yes/No branches. Flow 4 shows an editor navigating to their own permissions via the Editors View detail panel.
+
 ### Navigation Flow
 
 ![Navigation Flow](docs/navigation-flow.png)
+
+A spatial diagram of all screens and how they connect. Solid lines show primary navigation from the Portfolio Cover to each section hub. Dashed lines show back navigation. Dotted purple lines show in-section links between the User & Group Management sub-screens (e.g. Group Inspection ↔ User Management, Editors View → Hidden Groups). Profile and Self-Reflection sit in their own cluster on the right with a cross-link between them.
 
 ### User Flows covered
 
