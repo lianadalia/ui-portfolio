@@ -113,6 +113,18 @@ UX documentation is captured in the same Figma file:
 | **User Flow** | `20:2` | 4 key interaction paths for Admin and Editor roles |
 | **Navigation Flow** | `21:2` | Screen-to-screen navigation diagram with primary, back, and in-section links |
 
+### Site Map
+
+![Site Map](docs/sitemap.png)
+
+### User Flow
+
+![User Flow](docs/user-flow.png)
+
+### Navigation Flow
+
+![Navigation Flow](docs/navigation-flow.png)
+
 ### User Flows covered
 
 1. **Admin: Manage a User** — Cover → User Management → search → User Inspection → Edit Role / Suspend / Add to Group
