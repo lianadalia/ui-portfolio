@@ -3,63 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Map — UI Portfolio</title>
+<title>Site Map — AdminPanel</title>
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; padding: 48px 32px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; padding: 48px 40px; }
 
   h1 { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
-  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 48px; }
+  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 56px; }
 
-  .tree { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .tree { display: flex; flex-direction: column; align-items: center; }
 
   /* Root */
   .root-node {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
     border-radius: 12px;
-    padding: 14px 32px;
+    padding: 14px 40px;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: .4px;
     box-shadow: 0 4px 20px rgba(99,102,241,.4);
   }
 
-  .v-line { width: 2px; height: 32px; background: #334155; margin: 0 auto; }
-  .h-bar { display: flex; align-items: flex-start; gap: 0; position: relative; }
+  .v-line { width: 2px; height: 36px; background: #334155; margin: 0 auto; }
 
-  /* Horizontal connector line spanning all section columns */
-  .h-bar::before {
+  /* Section row */
+  .section-row {
+    display: flex;
+    gap: 0;
+    position: relative;
+    align-items: flex-start;
+  }
+  .section-row::before {
     content: '';
     position: absolute;
     top: 0;
-    left: calc(100% / 12);
-    right: calc(100% / 12);
+    left: calc(100% / 14);
+    right: calc(100% / 14);
     height: 2px;
     background: #334155;
   }
 
-  .section-col { display: flex; flex-direction: column; align-items: center; flex: 1; }
-
+  .section-col { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 160px; }
   .section-top-line { width: 2px; height: 32px; background: #334155; }
 
   .section-node {
     border-radius: 10px;
-    padding: 11px 18px;
+    padding: 11px 20px;
     font-size: 13px;
     font-weight: 600;
     text-align: center;
     white-space: nowrap;
-    min-width: 140px;
     border: 1.5px solid transparent;
   }
-  .s-mgmt   { background: #1e293b; border-color: #6366f1; color: #a5b4fc; }
-  .s-browser { background: #1e293b; border-color: #0ea5e9; color: #7dd3fc; }
-  .s-mobile  { background: #1e293b; border-color: #10b981; color: #6ee7b7; }
-  .s-test    { background: #1e293b; border-color: #f59e0b; color: #fcd34d; }
-  .s-profile { background: #1e293b; border-color: #ec4899; color: #f9a8d4; }
-  .s-reflect { background: #1e293b; border-color: #f97316; color: #fdba74; }
+  .s-users   { background: #1e293b; border-color: #6366f1; color: #a5b4fc; }
+  .s-editors { background: #1e293b; border-color: #8b5cf6; color: #c4b5fd; }
+  .s-groups  { background: #1e293b; border-color: #7c3aed; color: #c4b5fd; }
 
   .children { display: flex; flex-direction: column; align-items: center; }
   .child-v-line { width: 2px; height: 20px; background: #334155; }
@@ -68,30 +68,28 @@
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 8px;
-    padding: 8px 14px;
+    padding: 9px 16px;
     font-size: 12px;
     color: #94a3b8;
     white-space: nowrap;
-    min-width: 130px;
+    min-width: 150px;
+    text-align: center;
+  }
+  .child-node.highlight {
+    border-color: #6366f1;
+    color: #a5b4fc;
+    background: rgba(99,102,241,.07);
+  }
+
+  /* Detail annotation */
+  .annotation {
+    font-size: 10.5px;
+    color: #475569;
+    margin-top: 3px;
     text-align: center;
   }
 
-  .child-group { display: flex; flex-direction: column; align-items: center; gap: 0; }
-
-  .grandchild-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .grandchild-node {
-    background: #0f172a;
-    border: 1px dashed #334155;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 11px;
-    color: #64748b;
-    white-space: nowrap;
-    min-width: 120px;
-    text-align: center;
-  }
-
-  .legend { display: flex; gap: 24px; margin-top: 48px; flex-wrap: wrap; justify-content: center; }
+  .legend { display: flex; gap: 24px; margin-top: 56px; flex-wrap: wrap; justify-content: center; }
   .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; }
   .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
 </style>
@@ -99,124 +97,65 @@
 <body>
 
 <h1>Site Map</h1>
-<p class="subtitle">UI Portfolio — Information Architecture Overview</p>
+<p class="subtitle">AdminPanel — Information Architecture</p>
 
 <div class="tree">
 
-  <!-- Root -->
-  <div class="root-node">Portfolio Hub (Cover)</div>
+  <div class="root-node">AdminPanel</div>
   <div class="v-line"></div>
 
-  <!-- Section row -->
-  <div class="h-bar">
+  <div class="section-row">
 
-    <!-- User & Group Management -->
+    <!-- Users & Management -->
     <div class="section-col">
       <div class="section-top-line"></div>
-      <div class="section-node s-mgmt">User &amp; Group Mgmt</div>
+      <div class="section-node s-users">User Management</div>
       <div class="children">
         <div class="child-v-line"></div>
-        <div class="child-node">Editors View</div>
+        <div class="child-node highlight">All Users Table</div>
+        <div class="annotation">248 users · filters · bulk actions</div>
         <div class="child-v-line"></div>
-        <div class="child-node">Hidden Groups</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Group Creation</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Group Inspection</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">User Management</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">User Inspection</div>
+        <div class="child-node highlight">User Inspection</div>
+        <div class="annotation">Profile · sessions · audit log</div>
       </div>
     </div>
 
-    <!-- Browser -->
+    <!-- Editors -->
     <div class="section-col">
       <div class="section-top-line"></div>
-      <div class="section-node s-browser">Browser</div>
+      <div class="section-node s-editors">Editors</div>
       <div class="children">
         <div class="child-v-line"></div>
-        <div class="child-node">Tab Bar</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Address / URL Bar</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Bookmarks Bar</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Web Viewport</div>
+        <div class="child-node highlight">Editors View</div>
+        <div class="annotation">Grid · role filter · detail panel</div>
       </div>
     </div>
 
-    <!-- Mobile App -->
+    <!-- Groups -->
     <div class="section-col">
       <div class="section-top-line"></div>
-      <div class="section-node s-mobile">Mobile App</div>
+      <div class="section-node s-groups">Groups</div>
       <div class="children">
         <div class="child-v-line"></div>
-        <div class="child-node">Dashboard / Home</div>
+        <div class="child-node highlight">Group Inspection</div>
+        <div class="annotation">Members · sub-groups · permissions</div>
         <div class="child-v-line"></div>
-        <div class="child-node">Progress Charts</div>
+        <div class="child-node highlight">Group Creation</div>
+        <div class="annotation">4-step wizard</div>
         <div class="child-v-line"></div>
-        <div class="child-node">Mood Check-in</div>
+        <div class="child-node highlight">Hidden Groups</div>
+        <div class="annotation">Admin-only · access rules · reveal</div>
       </div>
     </div>
 
-    <!-- Test Dashboard -->
-    <div class="section-col">
-      <div class="section-top-line"></div>
-      <div class="section-node s-test">Test Dashboard</div>
-      <div class="children">
-        <div class="child-v-line"></div>
-        <div class="child-node">Stats Overview</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Test Suite List</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Error Detail Panel</div>
-      </div>
-    </div>
+  </div>
 
-    <!-- Profile -->
-    <div class="section-col">
-      <div class="section-top-line"></div>
-      <div class="section-node s-profile">Profile</div>
-      <div class="children">
-        <div class="child-v-line"></div>
-        <div class="child-node">Cover &amp; Avatar</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Skills &amp; Expertise</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Activity Feed</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Achievements</div>
-      </div>
-    </div>
-
-    <!-- Self-Reflection -->
-    <div class="section-col">
-      <div class="section-top-line"></div>
-      <div class="section-node s-reflect">Self-Reflection</div>
-      <div class="children">
-        <div class="child-v-line"></div>
-        <div class="child-node">Journal Entries</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Mood Selector</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Guided Prompts</div>
-        <div class="child-v-line"></div>
-        <div class="child-node">Insights Panel</div>
-      </div>
-    </div>
-
-  </div><!-- .h-bar -->
-
-</div><!-- .tree -->
+</div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div> User &amp; Group Management</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#0ea5e9"></div> Browser</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> Mobile App</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Test Dashboard</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div> Profile</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div> Self-Reflection</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div> User Management</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Editors</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div> Groups</div>
 </div>
 
 </body>

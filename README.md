@@ -1,12 +1,12 @@
-# UI Portfolio
+# AdminPanel
 
-A collection of high-fidelity HTML/CSS UI mockups covering six design domains: user & group management, browser chrome, mobile wellness app, QA test dashboard, social profile, and personal journaling. All screens are captured into a single Figma file alongside full UX documentation (site map, user flows, navigation flow).
+A focused UI case study of an enterprise admin panel — covering user management, editors, group hierarchies, permissions, hidden groups, and visibility controls. All screens are captured into a single Figma file alongside full UX documentation (site map, user flows, navigation flow).
 
 ---
 
 ## Overview
 
-This portfolio demonstrates end-to-end UI design thinking — from information architecture through interaction flows to pixel-level screen design. Each section tackles a different product context and design challenge, showing range across admin tools, consumer apps, and developer tooling.
+This project demonstrates end-to-end UI design thinking for a complex admin tool — from information architecture through interaction flows to pixel-level screen design. The focus is on role-based access control, group management, and editor oversight within an enterprise content platform.
 
 **[▶ Interactive Prototype](http://localhost:8765/prototype.html)** — click through 4 flows (Admin: Manage a User, Create a Group, Reveal Hidden Group, Editor: Check Permissions). Serve locally first — see [Live Demo](#live-demo) below.
 
@@ -117,26 +117,26 @@ UX documentation is captured in the same Figma file:
 
 ![Site Map](docs/sitemap.png)
 
-The full information architecture of the portfolio. The root node is the Portfolio Cover, which branches into 6 sections. User & Group Management is the deepest section with 6 sub-screens; the remaining sections (Browser, Mobile App, Test Dashboard, Profile, Self-Reflection) each have 3–4 content areas. Colour coding matches the accent colours used across the portfolio.
+The AdminPanel information architecture. The root node is the AdminPanel hub, which branches into three sections: User Management (All Users Table → User Inspection), Editors (Editors View), and Groups (Group Inspection → Group Creation → Hidden Groups). Each node includes a short annotation describing its key content.
 
 ### User Flow
 
 ![User Flow](docs/user-flow.png)
 
-Four key task flows mapped from start to completion. Flow 1 shows an admin locating a user and choosing between three actions (edit role, suspend, add to group) at a decision point. Flow 2 walks through the 4-step group creation wizard. Flow 3 covers the hidden group reveal path including a confirmation dialog with Yes/No branches. Flow 4 shows an editor navigating to their own permissions via the Editors View detail panel.
+Four admin task flows mapped from start to completion. Flow 1 shows an admin locating a user and choosing between three actions (edit role, suspend, add to group) at a decision point. Flow 2 walks through the 4-step group creation wizard. Flow 3 covers the hidden group reveal path including a confirmation dialog with Yes/No branches. Flow 4 shows an admin reviewing editor permissions via the Editors View detail panel.
 
 ### Navigation Flow
 
 ![Navigation Flow](docs/navigation-flow.png)
 
-A spatial diagram of all screens and how they connect. Solid lines show primary navigation from the Portfolio Cover to each section hub. Dashed lines show back navigation. Dotted purple lines show in-section links between the User & Group Management sub-screens (e.g. Group Inspection ↔ User Management, Editors View → Hidden Groups). Profile and Self-Reflection sit in their own cluster on the right with a cross-link between them.
+A spatial diagram of all AdminPanel screens and how they connect. Solid lines show primary navigation from the AdminPanel hub to each section (User Management, Editors View, Group Inspection). Dotted purple lines show in-section links — User Management → User Inspection, Group Inspection → Group Creation, Group Inspection → Hidden Groups. Dashed lines show back navigation paths.
 
 ### User Flows covered
 
 1. **Admin: Manage a User** — Cover → User Management → search → User Inspection → Edit Role / Suspend / Add to Group
 2. **Admin: Create a Group** — Groups list → Group Creation wizard (4 steps) → Group Inspection
 3. **Admin: Reveal a Hidden Group** — Hidden Groups → select → Make Visible → confirm dialog
-4. **Editor: Check Permissions** — Editors View → click own card → detail panel → review permissions and activity
+4. **Admin: Review Editor Permissions** — Editors View → click editor card → detail panel → review permissions, groups, and activity
 
 ---
 

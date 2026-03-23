@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Flow — UI Portfolio</title>
+<title>User Flow — AdminPanel</title>
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,7 +12,6 @@
   h1 { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
   .subtitle { font-size: 14px; color: #64748b; margin-bottom: 48px; }
 
-  /* --- Shared node styles --- */
   .node {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 10px 18px; border-radius: 8px; font-size: 12.5px; font-weight: 500;
@@ -21,11 +20,9 @@
   .node-start { background: #22c55e; color: #052e16; border-radius: 999px; font-weight: 700; padding: 10px 24px; }
   .node-end   { background: #ef4444; color: #fff; border-radius: 999px; font-weight: 700; padding: 10px 24px; }
   .node-screen { background: #1e293b; border: 1.5px solid #6366f1; color: #a5b4fc; }
-  .node-decision { background: #1e293b; border: 1.5px solid #f59e0b; color: #fcd34d; transform: rotate(0deg); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); padding: 22px 32px; }
+  .node-decision { background: #1e293b; border: 1.5px solid #f59e0b; color: #fcd34d; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); padding: 22px 32px; }
   .node-action  { background: #0f172a; border: 1px solid #334155; color: #94a3b8; font-size: 11.5px; }
 
-  /* --- Arrow --- */
-  .arrow { display: flex; align-items: center; }
   .arr-h { display: flex; align-items: center; }
   .arr-h .line { height: 2px; background: #475569; min-width: 24px; flex: 1; }
   .arr-h .head { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #475569; }
@@ -33,28 +30,15 @@
   .arr-v .line { width: 2px; background: #475569; height: 24px; }
   .arr-v .head { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #475569; }
 
-  /* --- Layout helpers --- */
   .flow { display: flex; flex-direction: column; gap: 0; }
   .row  { display: flex; align-items: center; gap: 0; flex-wrap: nowrap; }
   .col  { display: flex; flex-direction: column; align-items: center; gap: 0; }
-  .spacer { flex: 1; }
 
-  /* --- Section label --- */
   .flow-section { margin-bottom: 56px; }
-  .flow-title { font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; padding-left: 4px; border-left: 3px solid #6366f1; padding-left: 10px; }
-
-  .label { font-size: 10.5px; color: #64748b; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
-  .label-no  { font-size: 10px; color: #94a3b8; }
-  .label-yes { font-size: 10px; color: #94a3b8; }
-
-  .gap8  { width: 8px;  height: 8px; }
-  .gap16 { width: 16px; height: 16px; }
-  .gap24 { width: 24px; height: 24px; }
-  .gap32 { width: 32px; height: 32px; }
+  .flow-title { font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; padding-left: 10px; border-left: 3px solid #6366f1; }
 
   .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; margin-left: 8px; vertical-align: middle; }
   .badge-admin { background: #6366f1; color: #fff; }
-  .badge-user  { background: #0ea5e9; color: #fff; }
 
   hr.divider { border: none; border-top: 1px solid #1e293b; margin: 48px 0; }
 </style>
@@ -62,37 +46,28 @@
 <body>
 
 <h1>User Flow</h1>
-<p class="subtitle">UI Portfolio — Key interaction paths for Admin and End-User roles</p>
+<p class="subtitle">AdminPanel — Key interaction paths for Admin role</p>
 
-<!-- ─── FLOW 1: Admin manages a user ─── -->
+<!-- Flow 1 -->
 <div class="flow-section">
   <div class="flow-title">Flow 1 — Admin: Manage a User <span class="badge badge-admin">Admin</span></div>
-
   <div class="row">
     <div class="node node-start">Start</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-screen">Cover / Dashboard</div>
+    <div class="node node-screen">AdminPanel</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">User Management<br><span style="font-size:10px;color:#64748b">All Users table</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Search / filter user</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-screen">User Inspection<br><span style="font-size:10px;color:#64748b">Profile detail view</span></div>
+    <div class="node node-screen">User Inspection<br><span style="font-size:10px;color:#64748b">Profile detail</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="col">
       <div class="node node-decision" style="font-size:11px">Action?</div>
     </div>
   </div>
-
-  <!-- Decision branches -->
-  <div class="row" style="margin-top:32px; padding-left: 700px; gap: 0;">
-
-    <div class="col" style="margin-right: 24px;">
+  <div class="row" style="margin-top:32px; padding-left:660px; gap:0;">
+    <div class="col" style="margin-right:24px;">
       <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">Edit Role</div>
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
       <div class="node node-action">Change Role modal</div>
@@ -101,15 +76,13 @@
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
       <div class="node node-screen">Toast: role updated</div>
     </div>
-
-    <div class="col" style="margin-right: 24px;">
+    <div class="col" style="margin-right:24px;">
       <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">Suspend</div>
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
       <div class="node node-action">Confirm dialog</div>
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
       <div class="node node-screen" style="border-color:#ef4444;color:#fca5a5">User suspended</div>
     </div>
-
     <div class="col">
       <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">Add to Group</div>
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
@@ -119,76 +92,57 @@
       <div class="arr-v"><div class="line"></div><div class="head"></div></div>
       <div class="node node-end">Done</div>
     </div>
-
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- ─── FLOW 2: Admin creates a group ─── -->
+<!-- Flow 2 -->
 <div class="flow-section">
   <div class="flow-title">Flow 2 — Admin: Create a Group <span class="badge badge-admin">Admin</span></div>
-
   <div class="row">
     <div class="node node-start">Start</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Groups list</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Click "+ New Group"</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Group Creation<br><span style="font-size:10px;color:#64748b">Step 1 · Basics</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-action">Fill name, icon,<br>visibility, parent</div>
+    <div class="node node-action">Name, icon,<br>visibility, parent</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Step 2 · Settings</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Step 3 · Members</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Step 4 · Permissions</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Confirm "Create"</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Group Inspection<br><span style="font-size:10px;color:#64748b">New group view</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-end">Done</div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- ─── FLOW 3: Admin reveals a hidden group ─── -->
+<!-- Flow 3 -->
 <div class="flow-section">
   <div class="flow-title">Flow 3 — Admin: Reveal a Hidden Group <span class="badge badge-admin">Admin</span></div>
-
   <div class="row">
     <div class="node node-start">Start</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Groups list</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Filter: Hidden</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Hidden Groups</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Select group row</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Click "Make Visible"</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="col">
       <div class="node node-decision" style="font-size:11px">Confirm?</div>
       <div style="display:flex;gap:40px;margin-top:24px">
@@ -213,29 +167,22 @@
 
 <hr class="divider">
 
-<!-- ─── FLOW 4: Editor inspects their own permissions ─── -->
+<!-- Flow 4 -->
 <div class="flow-section">
-  <div class="flow-title">Flow 4 — Editor: Check Permissions <span class="badge badge-user">Editor</span></div>
-
+  <div class="flow-title">Flow 4 — Admin: Review Editor Permissions <span class="badge badge-admin">Admin</span></div>
   <div class="row">
     <div class="node node-start">Start</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-screen">Cover / Dashboard</div>
+    <div class="node node-screen">AdminPanel</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-screen">Editors View<br><span style="font-size:10px;color:#64748b">Grid of editors</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-action">Click own card</div>
+    <div class="node node-action">Click editor card</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
-    <div class="node node-screen">Editor detail panel<br><span style="font-size:10px;color:#64748b">Right side</span></div>
+    <div class="node node-screen">Detail panel<br><span style="font-size:10px;color:#64748b">Right side</span></div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-action">Review permissions,<br>groups, activity</div>
     <div class="arr-h"><div class="line" style="min-width:32px"></div><div class="head"></div></div>
-
     <div class="node node-end">Done</div>
   </div>
 </div>
