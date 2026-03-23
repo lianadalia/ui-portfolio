@@ -8,6 +8,8 @@ A collection of high-fidelity HTML/CSS UI mockups covering six design domains: u
 
 This portfolio demonstrates end-to-end UI design thinking — from information architecture through interaction flows to pixel-level screen design. Each section tackles a different product context and design challenge, showing range across admin tools, consumer apps, and developer tooling.
 
+**[▶ Interactive Prototype](http://localhost:8765/prototype.html)** — click through 4 flows (Admin: Manage a User, Create a Group, Reveal Hidden Group, Editor: Check Permissions). Serve locally first — see [Live Demo](#live-demo) below.
+
 ---
 
 ## Key Features
