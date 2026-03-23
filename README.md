@@ -27,26 +27,11 @@ A full-featured admin panel for managing editors, groups, and permissions inside
 ### Browser
 macOS-style browser chrome mockup with tab bar (5 tabs), address bar with security indicator, bookmarks bar, and a fully rendered fictional website (NovaSphere) inside the viewport.
 
-### Mobile App — Bloom Wellness
-Three iPhone mockups side-by-side showing a wellness tracking app:
-- Home/Dashboard with daily summary cards
-- Progress screen with weekly charts
-- Mood check-in screen with emoji selector and journaling prompt
-
 ### Test Dashboard
 Dark-theme QA tool for a software team:
 - Stats row: 128 tests · 76 passed · 4 failed · 48 skipped
 - Test suite list with pass/fail/skip status rows
 - Expandable error detail panel with stack trace and diff view
-
-### Profile
-Light-theme social profile page with cover photo, avatar, skill proficiency bars, activity feed posts, and achievement badge grid.
-
-### Self-Reflection Journal
-Warm minimal journaling interface with serif typography:
-- Entry sidebar with past entries and mood indicators
-- Writing area with guided prompts
-- Insights panel showing mood trend chart and streak counter
 
 ---
 
@@ -79,10 +64,7 @@ Then open **http://localhost:8765** — this loads `cover.html`, the portfolio h
 | User Management | `/user-management2.html` |
 | User Inspection | `/user-inspection.html` |
 | Browser | `/browser.html` |
-| Mobile App | `/mobile-app.html` |
 | Test Dashboard | `/test-dashboard.html` |
-| Profile | `/profile.html` |
-| Self-Reflection | `/self-reflection.html` |
 
 ---
 
@@ -109,8 +91,8 @@ UX documentation is captured in the same Figma file:
 
 | Document | Node | Description |
 |---|---|---|
-| **Site Map** | `19:2` | Full IA tree — all 6 sections and their sub-screens |
-| **User Flow** | `20:2` | 4 key interaction paths for Admin and Editor roles |
+| **Site Map** | `19:2` | Full IA tree — User Management, Editors, and Groups |
+| **User Flow** | `20:2` | 4 key admin interaction paths |
 | **Navigation Flow** | `21:2` | Screen-to-screen navigation diagram with primary, back, and in-section links |
 
 ### Site Map
@@ -157,8 +139,5 @@ Group Inspection and User Inspection both show where permissions come from (role
 ### Destructive actions require confirmation
 Suspending a user, revealing a hidden group, and revoking sessions all go through a confirmation step. Reveal and suspend use modal dialogs with explicit Yes/No choices; session revocation uses a labelled button that is visually separated from non-destructive actions.
 
-### Dark theme for high-density tools, light for personal screens
-Admin, browser, mobile, and test screens use dark backgrounds — appropriate for focus-heavy or ambient-light environments. Profile and Self-Reflection use light themes, matching the warmer, personal nature of those contexts.
-
-### Colour as role signal
-Each portfolio section has a consistent accent colour used across the site map, navigation flow, and cover card — indigo for admin/management, sky blue for browser, emerald for mobile, amber for testing, pink for profile, orange for journaling. This makes the portfolio itself navigable at a glance.
+### Dark theme throughout
+All admin screens use dark backgrounds — appropriate for focus-heavy environments and extended sessions. The consistent dark palette across all screens reinforces the tool's professional, enterprise character.
